@@ -1,0 +1,86 @@
+[
+  {
+    "id": "complex_irrop_refund",
+    "message": "CZ3101 航班 2026-07-29 取消，PNR AB12CD。一张票退款未到账，另一张请帮我退票。",
+    "expect": {
+      "domains": ["journey", "refund"],
+      "required_tools": [
+        "get_flight_status",
+        "get_booking",
+        "get_ticket_status",
+        "get_disruption_info",
+        "get_refund_status",
+        "get_payment_status",
+        "search_airline_knowledge",
+        "get_policy_clause"
+      ],
+      "forbidden_tools": ["execute_refund", "change_booking"],
+      "response_status": "handoff_required",
+      "handoff_required": true
+    }
+  },
+  {
+    "id": "simple_flight_status",
+    "message": "请问 CZ8888 航班 2026-07-29 正常吗？",
+    "expect": {
+      "domains": ["journey"],
+      "required_tools": ["get_flight_status"],
+      "forbidden_tools": ["get_refund_status"],
+      "response_status": "answered",
+      "handoff_required": false
+    }
+  },
+  {
+    "id": "refund_processing",
+    "message": "PNR AB12CD 的退款为什么还没到账？",
+    "expect": {
+      "domains": ["refund"],
+      "required_tools": [
+        "get_refund_status",
+        "get_payment_status",
+        "search_airline_knowledge",
+        "get_policy_clause"
+      ],
+      "forbidden_tools": ["get_flight_status"],
+      "response_status": "answered",
+      "handoff_required": false
+    }
+  },
+  {
+    "id": "missing_reference",
+    "message": "我的退款怎么还没到账？",
+    "expect": {
+      "domains": ["refund"],
+      "required_tools": [],
+      "forbidden_tools": ["get_refund_status", "get_payment_status"],
+      "response_status": "needs_clarification",
+      "handoff_required": false
+    }
+  },
+  {
+    "id": "cross_subject_denied",
+    "message": "查询 PNR PRIVATE1 的航班和客票情况。",
+    "verified_subject_id": "subject_demo",
+    "expect": {
+      "domains": ["journey"],
+      "required_tools": ["get_booking"],
+      "forbidden_tools": ["get_ticket_status"],
+      "response_status": "degraded",
+      "handoff_required": false
+    }
+  },
+  {
+    "id": "refund_timeout",
+    "message": "PNR AB12CD 的退款进度是什么？",
+    "forced_tool_statuses": {
+      "get_refund_status": "timeout"
+    },
+    "expect": {
+      "domains": ["refund"],
+      "required_tools": ["get_refund_status", "get_payment_status"],
+      "forbidden_tools": [],
+      "response_status": "degraded",
+      "handoff_required": false
+    }
+  }
+]

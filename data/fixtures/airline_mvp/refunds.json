@@ -1,0 +1,14 @@
+[
+  {
+    "refundRef": "RF1001",
+    "ticketRef": "TKT1001",
+    "orderRef": "ORD1001",
+    "pnrRef": "AB12CD",
+    "subjectId": "subject_demo",
+    "refundStatus": "PROCESSING",
+    "stage": "ACQUIRING_BANK",
+    "requestedAt": "2026-07-22T09:12:00+08:00",
+    "updatedAt": "2026-07-28T18:00:00+08:00"
+  }
+]
+

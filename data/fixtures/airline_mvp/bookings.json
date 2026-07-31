@@ -1,0 +1,43 @@
+[
+  {
+    "pnrRef": "AB12CD",
+    "subjectId": "subject_demo",
+    "orderRef": "ORD1001",
+    "passengerRefs": ["PAX001", "PAX002"],
+    "segments": [
+      {
+        "flightNo": "CZ3101",
+        "date": "2026-07-29",
+        "origin": "CAN",
+        "destination": "PKX",
+        "status": "CANCELLED"
+      }
+    ],
+    "ticketRefs": ["TKT1001", "TKT1002"]
+  },
+  {
+    "pnrRef": "ZX90YU",
+    "subjectId": "subject_demo",
+    "orderRef": "ORD2001",
+    "passengerRefs": ["PAX003"],
+    "segments": [
+      {
+        "flightNo": "CZ8888",
+        "date": "2026-07-29",
+        "origin": "CAN",
+        "destination": "SHA",
+        "status": "CONFIRMED"
+      }
+    ],
+    "ticketRefs": ["TKT2001"]
+  },
+  {
+    "pnrRef": "PRIVATE1",
+    "subjectId": "subject_other",
+    "orderRef": "ORD9999",
+    "passengerRefs": ["PAX999"],
+    "segments": [],
+    "ticketRefs": ["TKT9999"]
+  }
+]
+

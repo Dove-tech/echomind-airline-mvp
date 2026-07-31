@@ -1,0 +1,24 @@
+[
+  {
+    "ticketRef": "TKT1001",
+    "pnrRef": "AB12CD",
+    "subjectId": "subject_demo",
+    "couponStatus": "REFUNDED",
+    "updatedAt": "2026-07-22T09:12:00+08:00"
+  },
+  {
+    "ticketRef": "TKT1002",
+    "pnrRef": "AB12CD",
+    "subjectId": "subject_demo",
+    "couponStatus": "OPEN",
+    "updatedAt": "2026-07-29T07:25:00+08:00"
+  },
+  {
+    "ticketRef": "TKT2001",
+    "pnrRef": "ZX90YU",
+    "subjectId": "subject_demo",
+    "couponStatus": "OPEN",
+    "updatedAt": "2026-07-28T10:00:00+08:00"
+  }
+]
+

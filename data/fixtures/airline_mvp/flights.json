@@ -1,0 +1,27 @@
+[
+  {
+    "flightNo": "CZ3101",
+    "date": "2026-07-29",
+    "origin": "CAN",
+    "destination": "PKX",
+    "scheduledDeparture": "2026-07-29T08:00:00+08:00",
+    "actualDeparture": null,
+    "status": "CANCELLED",
+    "disruptionType": "CANCELLATION",
+    "reasonCategory": "CARRIER_CONTROLLED",
+    "snapshotAt": "2026-07-29T07:20:00+08:00"
+  },
+  {
+    "flightNo": "CZ8888",
+    "date": "2026-07-29",
+    "origin": "CAN",
+    "destination": "SHA",
+    "scheduledDeparture": "2026-07-29T16:30:00+08:00",
+    "actualDeparture": null,
+    "status": "ON_TIME",
+    "disruptionType": null,
+    "reasonCategory": null,
+    "snapshotAt": "2026-07-29T12:00:00+08:00"
+  }
+]
+

@@ -1,0 +1,26 @@
+name: echomind-airline-mvp
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: echomind-airline-postgres
+    restart: unless-stopped
+    environment:
+      # 仅用于本地开发。生产环境应由 Secret Manager 注入，不应复用这些值。
+      POSTGRES_DB: airline_mvp
+      POSTGRES_USER: airline_mvp
+      POSTGRES_PASSWORD: airline_mvp_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      # 使用命名卷保留数据；docker compose stop 不会删除该卷。
+      - airline_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airline_mvp -d airline_mvp"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  airline_postgres_data:
+    name: echomind-airline-postgres-data

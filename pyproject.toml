@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "echomind-airline-mvp"
+version = "0.1.0"
+description = "Architecture-complete interview MVP for a LangGraph airline support multi-agent system"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.10,<3",
+  "langgraph>=1.1,<2",
+  "langchain-core>=1.2,<2",
+  "langchain-openai>=1.0,<2",
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.32,<1",
+  "chromadb>=1.0,<2",
+  "langgraph-checkpoint-sqlite>=3.0,<4",
+  "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0,<10",
+  "httpx>=0.27,<1",
+]
+postgres = [
+  "psycopg[binary,pool]>=3.2,<4",
+  "langgraph-checkpoint-postgres>=3.0,<4",
+]
+
+[project.scripts]
+airline-mvp-api = "airline_mvp.api:run"
+airline-mvp-demo = "airline_mvp.cli:run_demo"
+airline-mvp-eval = "airline_mvp.cli:run_eval"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,21 @@
+[
+  {
+    "paymentRef": "PAY1001",
+    "orderRef": "ORD1001",
+    "pnrRef": "AB12CD",
+    "subjectId": "subject_demo",
+    "paymentStatus": "CAPTURED",
+    "refundGatewayStatus": "ACQUIRER_PROCESSING",
+    "updatedAt": "2026-07-28T18:00:00+08:00"
+  },
+  {
+    "paymentRef": "PAY2001",
+    "orderRef": "ORD2001",
+    "pnrRef": "ZX90YU",
+    "subjectId": "subject_demo",
+    "paymentStatus": "CAPTURED",
+    "refundGatewayStatus": null,
+    "updatedAt": "2026-07-28T18:00:00+08:00"
+  }
+]
+
