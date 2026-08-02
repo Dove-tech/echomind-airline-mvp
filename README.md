@@ -68,6 +68,11 @@ docker compose up -d postgres
 .\.venv\Scripts\python -m pip install -e ".[dev,postgres]"
 ```
 
+容器使用 PostgreSQL 17 + pgvector。空数据卷首次启动时会自动创建应用表、
+知识文档表，并写入 2 个演示 Case、8 条政策和对应 Trace。初始化 SQL 位于
+`scripts/postgres/`；当前 RAG 运行时仍默认使用 Chroma，PostgreSQL 知识表是
+后续 pgvector Adapter 的持久化落点。
+
 完整配置、原理、验证方式和 Windows/Docker 取舍见：
 [真实基础设施接入指南](docs/REAL_BACKENDS_GUIDE.md)。
 

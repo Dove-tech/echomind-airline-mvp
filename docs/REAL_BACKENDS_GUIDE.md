@@ -127,9 +127,19 @@ OpenAI-compatible 服务只兼容文本对话，不兼容 Tool/JSON Schema。
 
 ## 5. Docker 启动真实 PostgreSQL
 
-项目已经提供 `compose.yaml`：
+项目提供了完整的 `compose.yaml`，使用固定版本的 PostgreSQL 17 + pgvector。
+Docker 只将端口绑定到 `127.0.0.1`，数据库不会直接暴露到局域网。第一次使用
+空数据卷启动时，会依次执行：
+
+1. `scripts/postgres/00_extensions.sql`：启用 pgvector；
+2. `scripts/postgres/01_schema.sql`：创建 8 张应用运行表和 1 张知识文档表；
+3. `scripts/postgres/02_seed.sql`：写入政策、已回答 Case、人工接管 Case 和 Trace；
+4. `scripts/postgres/03_verify.sql`：检查扩展、表和种子数据是否完整。
+
+在工程目录执行：
 
 ```powershell
+docker compose config
 docker compose up -d postgres
 docker compose ps
 docker compose logs postgres
@@ -153,6 +163,32 @@ Checkpoint URL 留空时复用业务数据库 URL。应用启动时会执行：
 - 只使用 `CREATE TABLE/INDEX IF NOT EXISTS` 创建应用表；
 - 调用 `PostgresSaver.setup()` 创建 LangGraph Checkpoint 表；
 - 不执行 DROP、TRUNCATE 或删除迁移。
+
+检查初始化结果：
+
+```powershell
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c "SELECT extversion FROM pg_extension WHERE extname = 'vector';"
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c "SELECT case_id, status, case_summary FROM cases WHERE case_id LIKE 'seed_case_%' ORDER BY case_id;"
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c "SELECT document_id, version, domain, status FROM knowledge_documents ORDER BY document_id;"
+```
+
+### 已经运行过旧版 Compose 时
+
+PostgreSQL 官方镜像只在空数据卷首次初始化时自动执行
+`/docker-entrypoint-initdb.d`。如果 `echomind-airline-postgres-data` 卷已经存在，
+不要删除数据卷；启动容器后手动按顺序应用这组幂等脚本：
+
+```powershell
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/00_extensions.sql
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/01_schema.sql
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/02_seed.sql
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/03_verify.sql
+```
+
+脚本均使用 `CREATE ... IF NOT EXISTS` 和 `INSERT ... ON CONFLICT DO NOTHING`，
+不会覆盖已有 Case 或政策。当前应用的 RAG 仍使用 Chroma；
+`knowledge_documents.embedding` 只是 pgvector Adapter 的预留字段，不能把表中
+尚未写入的向量误认为已经被在线检索使用。
 
 停止服务但保留数据：
 
