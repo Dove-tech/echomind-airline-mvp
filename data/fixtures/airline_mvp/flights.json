@@ -22,6 +22,17 @@
     "disruptionType": null,
     "reasonCategory": null,
     "snapshotAt": "2026-07-29T12:00:00+08:00"
+  },
+  {
+    "flightNo": "EK302",
+    "date": "2026-08-15",
+    "origin": "DXB",
+    "destination": "PVG",
+    "scheduledDeparture": "2026-08-15T03:15:00+04:00",
+    "actualDeparture": null,
+    "status": "CANCELLED",
+    "disruptionType": "CANCELLATION",
+    "reasonCategory": "CARRIER_CONTROLLED",
+    "snapshotAt": "2026-08-14T23:40:00+04:00"
   }
 ]
-

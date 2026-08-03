@@ -73,7 +73,6 @@ def run_offline_evaluation(
     for case in dataset:
         service = build_service(
             runtime_root=root / case.id,
-            prefer_chroma=False,
             # 离线基准必须与开发者本机 .env 隔离，避免真实 LLM 的随机性、
             # API 费用或外部 PostgreSQL 状态污染固定回归结果。
             settings=RuntimeSettings(

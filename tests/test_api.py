@@ -3,11 +3,21 @@
 from fastapi.testclient import TestClient
 
 from airline_mvp.api import create_app
+from airline_mvp.config import RuntimeSettings
 from airline_mvp.service import build_service
 
 
 def test_chat_and_trace_endpoints(tmp_path) -> None:
-    service = build_service(runtime_root=tmp_path, prefer_chroma=False)
+    service = build_service(
+        runtime_root=tmp_path,
+        settings=RuntimeSettings(
+            llm_backend="mock",
+            database_backend="sqlite",
+            checkpoint_backend="memory",
+            embedding_backend="mock",
+            knowledge_backend="local",
+        ),
+    )
     client = TestClient(create_app(service))
     response = client.post(
         "/v1/chat",

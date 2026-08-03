@@ -4,7 +4,7 @@
 --------
 - 设计 §8：通过显式依赖注入保持 Runtime 可替换。
 - 设计 §17：提供单一公开 invoke 边界，并使用 Case 级 Checkpoint Thread。
-- 设计 §21：Fixture/本地模式是默认面试演示方式。
+- 设计 §21：航司 API 保持 Fixture，其余面试链路使用真实基础设施。
 
 FastAPI 和 CLI 都调用 ``AirlineMVPService.chat``，因此无需启动网络服务，
 也能对编排行为进行测试。
@@ -13,9 +13,9 @@ FastAPI 和 CLI 都调用 ``AirlineMVPService.chat``，因此无需启动网络�
 from __future__ import annotations
 
 import uuid
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from langchain_core.messages import HumanMessage
 
@@ -53,6 +53,11 @@ class AirlineMVPService:
     database_backend: str = "sqlite"
     embedding_backend: str = "mock"
     airline_api_backend: str = "fixture"
+    knowledge_health: dict[str, Any] = field(default_factory=dict)
+    _closers: list[Callable[[], None]] = field(
+        default_factory=list,
+        repr=False,
+    )
 
     def chat(self, request: ChatRequest) -> ChatResult:
         request_id = f"req_{uuid.uuid4().hex[:16]}"
@@ -117,11 +122,17 @@ class AirlineMVPService:
     def get_case(self, case_id: str) -> dict[str, Any] | None:
         return self.cases.get_case(case_id)
 
+    def close(self) -> None:
+        """按逆序关闭 Checkpoint 与数据库连接池。"""
+
+        for closer in reversed(self._closers):
+            closer()
+        self._closers.clear()
+
 
 def build_service(
     *,
     runtime_root: Path | None = None,
-    prefer_chroma: bool | None = None,
     model: ModelGateway | None = None,
     knowledge: KnowledgeService | None = None,
     database: Database | None = None,
@@ -137,12 +148,12 @@ def build_service(
     # 1. 准备运行目录 runtime
     # 2. 创建 SQLite 或 PostgreSQL 业务数据库和 Repository
     # 3. 创建模拟航司后台（本轮唯一固定为 Mock 的部分）
-    # 4. 创建本地/Chroma RAG，并选择 Mock/真实 Embedding
+    # 4. 创建 PostgreSQL 混合 RAG，并选择本地/远程真实 Embedding
     # 5. 注册只读工具
     # 6. 创建带权限检查的 Tool Executor
     # 7. 创建 Mock 或真实模型决策 Gateway
     # 8. 把 Worker 需要的依赖打包
-    # 9. 创建 Memory/SQLite/PostgreSQL LangGraph Checkpointer
+    # 9. 创建 PostgreSQL LangGraph Checkpointer（测试可注入 Memory/SQLite）
     # 10. 把 Parent Graph 需要的依赖打包
     # 11. 编译完整 LangGraph
     # 12. 返回统一 Service
@@ -173,15 +184,6 @@ ParentGraph
     root.mkdir(parents=True, exist_ok=True)
 
     resolved_settings = settings or RuntimeSettings.from_env()
-    # ``prefer_chroma`` 是旧版测试入口。显式传入时仅覆盖知识库类型，不影响
-    # LLM、数据库和 Embedding 配置；新代码推荐统一使用 RuntimeSettings。
-    if prefer_chroma is not None:
-        resolved_settings = replace(
-            resolved_settings,
-            knowledge_backend="chroma" if prefer_chroma else "local",
-        )
-        resolved_settings.validate()
-
     # -------------------- Mock/本地数据库 vs 真实 PostgreSQL --------------------
     if database is not None:
         application_database = database
@@ -199,10 +201,11 @@ ParentGraph
     # -------------------- 航司 API：按需求继续使用合成 Fixture --------------------
     fixtures = AirlineFixtureStore()
 
-    # -------------------- Mock Hash/真实 Embedding + 本地/Chroma RAG --------------------
+    # -------------------- PostgreSQL FTS + pgvector RAG --------------------
     knowledge_service = knowledge or build_knowledge_service(
         settings=resolved_settings,
         runtime_root=root,
+        database=application_database,
     )
     registry = build_tool_registry(fixtures, knowledge_service)
     executor = ToolExecutor(
@@ -222,7 +225,7 @@ ParentGraph
         registry=registry,
         traces=traces,
     )
-    checkpointer, checkpoint_backend = build_checkpointer(
+    checkpointer, checkpoint_backend, checkpoint_close = build_checkpointer(
         root / "langgraph_checkpoints.sqlite3",
         backend=resolved_settings.checkpoint_backend,
         postgres_url=resolved_settings.resolved_checkpoint_database_url,
@@ -251,4 +254,11 @@ ParentGraph
         database_backend=application_database.backend_name,
         embedding_backend=resolved_settings.embedding_backend,
         airline_api_backend="fixture",
+        knowledge_health=knowledge_service.health(),
+        _closers=[
+            application_database.close
+            if hasattr(application_database, "close")
+            else lambda: None,
+            checkpoint_close,
+        ],
     )

@@ -16,6 +16,14 @@
     "paymentStatus": "CAPTURED",
     "refundGatewayStatus": null,
     "updatedAt": "2026-07-28T18:00:00+08:00"
+  },
+  {
+    "paymentRef": "PAY3001",
+    "orderRef": "ORD3001",
+    "pnrRef": "EK7D3M",
+    "subjectId": "subject_demo",
+    "paymentStatus": "CAPTURED",
+    "refundGatewayStatus": "AIRLINE_PROCESSING",
+    "updatedAt": "2026-08-03T08:30:00+08:00"
   }
 ]
-

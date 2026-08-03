@@ -185,7 +185,12 @@ class EvidenceItem(BaseModel):
     evidence_type: str
     source_type: str
     source_id: str
-    authority: Literal["system_of_record", "official_policy", "approved_faq"]
+    authority: Literal[
+        "system_of_record",
+        "official_policy",
+        "airline_official_web",
+        "approved_faq",
+    ]
     summary: str
     structured_data: dict[str, Any] = Field(default_factory=dict)
     observed_at: datetime = Field(default_factory=utc_now)

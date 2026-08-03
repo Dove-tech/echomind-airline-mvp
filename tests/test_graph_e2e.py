@@ -1,5 +1,6 @@
 """设计 §9–§24 对应的 Graph 端到端测试。"""
 
+from airline_mvp.config import RuntimeSettings
 from airline_mvp.models import ChatRequest, ToolStatus
 from airline_mvp.service import build_service
 
@@ -8,6 +9,18 @@ COMPLEX_MESSAGE = (
     "CZ3101 航班 2026-07-29 取消，PNR AB12CD。"
     "一张票退款未到账，另一张请帮我退票。"
 )
+
+
+def _offline_settings() -> RuntimeSettings:
+    """测试不读取开发者 .env，也不访问 PostgreSQL 或模型网络。"""
+
+    return RuntimeSettings(
+        llm_backend="mock",
+        database_backend="sqlite",
+        checkpoint_backend="memory",
+        embedding_backend="mock",
+        knowledge_backend="local",
+    )
 
 
 def _tool_events(service, case_id):
@@ -19,7 +32,7 @@ def _tool_events(service, case_id):
 
 
 def test_complex_case_runs_two_workers_and_all_eight_read_tools(tmp_path) -> None:
-    service = build_service(runtime_root=tmp_path, prefer_chroma=False)
+    service = build_service(runtime_root=tmp_path, settings=_offline_settings())
     result = service.chat(ChatRequest(message=COMPLEX_MESSAGE))
 
     assert result.status.value == "waiting_for_human"
@@ -47,7 +60,7 @@ def test_complex_case_runs_two_workers_and_all_eight_read_tools(tmp_path) -> Non
 
 
 def test_missing_reference_short_circuits_before_tools(tmp_path) -> None:
-    service = build_service(runtime_root=tmp_path, prefer_chroma=False)
+    service = build_service(runtime_root=tmp_path, settings=_offline_settings())
     result = service.chat(ChatRequest(message="我的退款为什么还没到账？"))
     assert result.response.response_status == "needs_clarification"
     assert _tool_events(service, result.case_id) == []
@@ -56,7 +69,7 @@ def test_missing_reference_short_circuits_before_tools(tmp_path) -> None:
 def test_tool_timeout_becomes_gap_not_fake_fact(tmp_path) -> None:
     service = build_service(
         runtime_root=tmp_path,
-        prefer_chroma=False,
+        settings=_offline_settings(),
         forced_tool_statuses={"get_refund_status": ToolStatus.TIMEOUT},
     )
     result = service.chat(ChatRequest(message="PNR AB12CD 的退款进度是什么？"))
@@ -72,7 +85,7 @@ def test_tool_timeout_becomes_gap_not_fake_fact(tmp_path) -> None:
 
 
 def test_public_flight_query_does_not_route_to_refund(tmp_path) -> None:
-    service = build_service(runtime_root=tmp_path, prefer_chroma=False)
+    service = build_service(runtime_root=tmp_path, settings=_offline_settings())
     result = service.chat(
         ChatRequest(
             message="请问 CZ8888 航班 2026-07-29 正常吗？",

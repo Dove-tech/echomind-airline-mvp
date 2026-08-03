@@ -8,20 +8,22 @@
 | `state.py` | §10 | Parent/Worker State 与并行 Reducer |
 | `domain_config.py` | §4, §12, §13 | 领域 Agent 配置和权限 |
 | `config.py` | §8, §16–§18 | Mock/真实后端环境变量和快速失败校验 |
-| `model_gateway.py` | §4, §8, §11, §13, §19 | 离线决策与真实结构化模型调用 |
+| `model_gateway.py` | §4, §8, §11, §13, §19 | 离线决策、真实结构化输出与原生 Function Calling |
 | `parent_graph.py` | §9, §10, §14, §20 | Coordinator、动态路由、并行、质检、接管 |
 | `worker_graph.py` | §12–§15, §19 | 通用 DomainWorkerGraph 与工具循环 |
 | `tools.py` | §15, §25 | Tool Registry、Schema、权限、重试 |
 | `fixtures.py` | §15, §21, §25 | 版本化只读业务 Adapter |
-| `knowledge.py` | §16, §19 | Chroma/Local RAG、Mock/真实 Embedding、原文下钻 |
+| `knowledge.py` | §16, §19 | PostgreSQL FTS + pgvector + RRF、真实 Embedding、原文下钻 |
 | `evidence.py` | §19 | ToolResult 到 EvidenceItem |
 | `quality.py` | §19, §20, §25 | 引用、执行宣称和接管硬规则 |
-| `checkpointing.py` | §17, §18 | Memory/SQLite/PostgreSQL Checkpoint |
-| `persistence.py` | §18, §20, §23 | Case/Evidence/Handoff/Trace SQLite/PostgreSQL |
+| `checkpointing.py` | §17, §18 | PostgreSQL Checkpoint 与离线测试 Adapter |
+| `persistence.py` | §18, §20, §23 | PostgreSQL Case/Evidence/Handoff/Trace 与测试 Adapter |
 | `service.py` | §8, §17, §21 | 依赖装配与单一调用入口 |
 | `api.py` | §17, §23 | FastAPI 传输层 |
 | `evaluation.py` | §19, §24 | Offline + Trace-level 评测 |
 | `evals/airline_mvp_cases.json` | §21, §24, §25 | 固定回归数据集 |
+| `scripts/sync_official_knowledge.py` | §16, §19 | 官网白名单抓取、快照、切块和 PostgreSQL 导入 |
+| `scripts/postgres/` | §18, §23 | Schema、前向迁移、种子数据与数据库验收 |
 | `tests/` | §24, §25 | 单元、集成和端到端验收 |
 
 ## 面试代码走读路径
@@ -33,3 +35,6 @@
 5. 从 `knowledge.py`/`evidence.py` 解释为什么 RAG 摘要不能直接变成事实。
 6. 从 `quality.py`/`persistence.py` 解释只读边界和人工接管幂等。
 7. 从 `evaluation.py` 展示轨迹级指标，不只看最终回复。
+
+工具调用协议的逐步时序、权限双检和 LangGraph/LangChain/MCP 边界见
+[Function Calling 改造与完整链路](FUNCTION_CALLING_ARCHITECTURE.md)。

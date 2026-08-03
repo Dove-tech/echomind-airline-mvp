@@ -1,306 +1,307 @@
-# EchoMind Airline MVP：Mock 与真实基础设施接入指南
+# EchoMind Airline MVP：除航司 API 外的全真实运行指南
 
-## 1. 改造后的边界
+## 1. 最终运行边界
 
-本项目现在支持在不修改 LangGraph 业务图的前提下，逐项切换基础设施：
+当前面试运行档只有航司业务 API 使用合成 Fixture，其余关键基础设施都是真实实现：
 
-| 能力 | 默认模式 | 真实模式 | 是否访问外部服务 |
-|---|---|---|---|
-| 航班、PNR、客票、退款、支付 API | JSON Fixture | 本轮不实现 | 否 |
-| 大模型 | `DeterministicModelGateway` | OpenAI-compatible Chat API | 是 |
-| 应用数据库 | SQLite | PostgreSQL | PostgreSQL 模式是 |
-| LangGraph Checkpoint | SQLite | PostgreSQL | PostgreSQL 模式是 |
-| 向量数据库 | 本地持久化 Chroma | 本地持久化 Chroma | 否 |
-| Embedding | Hash Embedding | OpenAI-compatible Embedding API | 是 |
-| HTTP API | FastAPI | FastAPI | 仅监听本机 |
+| 能力 | 运行实现 | 是否真实持久化/调用 |
+|---|---|---|
+| Chat LLM | OpenAI-compatible API | 是，真实网络调用 |
+| 工具选择 | 原生 Function Calling | 是，真实模型 `tool_calls` |
+| 业务数据库 | PostgreSQL 17 | 是 |
+| Case/Trace/Evidence/Handoff | PostgreSQL Repository | 是 |
+| LangGraph Checkpoint | `PostgresSaver` | 是 |
+| 知识来源与原文 | PostgreSQL | 是 |
+| 关键词检索 | PostgreSQL `tsvector` + GIN | 是 |
+| 语义检索 | pgvector + HNSW | 是 |
+| Embedding | FastEmbed `BAAI/bge-small-zh-v1.5` | 是，本地 ONNX 模型 |
+| RAG 融合 | Vector + FTS + RRF | 是 |
+| 航班/PNR/客票/退款/支付 | JSON Fixture Adapter | 否，这是唯一 Mock 边界 |
 
-这里的 SQLite 不是“返回固定结果的假数据库”，而是真实的嵌入式关系数据库。
-它被当作本地/Mock 运行档，是因为无需独立服务，且不具备 PostgreSQL 的连接池、
-跨进程锁和部署形态。
+离线单元测试仍保留 SQLite、MemorySaver、LocalKnowledgeStore 和 Hash Embedding，
+但测试会在代码中显式注入这些 Adapter，不会成为真实运行档的静默回退。
 
-航司 API 仍保持 Fixture，原因是航班和旅客业务系统通常不是个人项目能够合法
-访问的基础设施。Fixture Store 已经放在 Tool Adapter 后面，将来替换航司 API
-不需要修改 Graph。
+## 2. 为什么全部放在 PostgreSQL
 
-## 2. 为什么推荐在 Windows 上使用 Docker PostgreSQL
+这个 MVP 数据规模很小，不需要为了展示“向量数据库”单独维护专用向量服务。统一到
+PostgreSQL 后，面试时可以清楚解释：
 
-对于这个面试 MVP，推荐顺序是：
+- Case、Trace、Evidence 与知识来源能够放在同一个事务和审计体系中；
+- pgvector 负责语义向量距离，PostgreSQL FTS 负责精确关键词；
+- RAG 结果可以直接回到 `knowledge_sources` 和 `knowledge_documents` 原文；
+- Docker 只需维护一个有状态服务；
+- LangGraph Checkpoint 与业务表逻辑隔离，但物理上复用同一个数据库实例；
+- 对 32～几千个知识切块，PostgreSQL 的性能已经足够。
 
-1. 日常学习和跑测试：SQLite。
-2. 展示真实数据库集成：Docker PostgreSQL。
-3. 只有想学习 PostgreSQL 在 Windows 上的安装、服务、用户和目录管理时，
-   才使用原生 Windows PostgreSQL。
+代价是三个逻辑模块分别持有连接池：业务 Repository、Checkpoint 和应用进程。
+MVP 使用较小 Pool；正式生产可拆分数据库账号、Schema 和连接池预算。
 
-### Docker 的优势
+## 3. 数据流
 
-- 项目所需 PostgreSQL 版本、账号、端口写在 `compose.yaml` 中，可复现；
-- 不会在 Windows 注册长期后台服务；
-- 项目和数据库边界清晰，换电脑后更容易重建；
-- 数据保存在命名卷中，停止容器不会丢失；
-- 面试时一条 `docker compose up -d postgres` 就能解释环境。
-
-代价是需要 Docker Desktop，内存占用通常高于原生服务。Docker Desktop 没有
-运行时，数据库也不可用。
-
-### 原生 Windows PostgreSQL 的优势
-
-- 少一层容器网络；
-- 长期运行资源占用通常更直接；
-- 可以练习 Windows Service、`pg_hba.conf`、备份和数据库运维。
-
-代价是安装、升级和卸载会影响整个 Windows 环境，端口和数据目录也更容易与
-其他项目冲突。对于单人面试项目，这些运维工作通常没有直接业务价值。
-
-结论：**本项目用 Docker PostgreSQL 更合适，SQLite 作为随时可用的保底模式。**
-
-## 3. 第一次安装
-
-在工程目录打开 PowerShell：
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python -m pip install --upgrade pip
-.\.venv\Scripts\python -m pip install -e ".[dev,postgres]"
-Copy-Item .env.example .env
+```mermaid
+flowchart LR
+    WEB["航空公司官网"] --> SYNC["白名单抓取与正文抽取"]
+    SYNC --> SNAP["本地 UTF-8 快照 + SHA-256"]
+    SNAP --> CHUNK["按正文块切分"]
+    CHUNK --> EMB["FastEmbed 中文向量"]
+    EMB --> PG[("PostgreSQL + pgvector")]
+    PG --> V["HNSW 向量召回"]
+    PG --> F["FTS/GIN 关键词召回"]
+    V --> RRF["RRF 融合 + 权威微调"]
+    F --> RRF
+    RRF --> CANDIDATE["政策候选 Evidence"]
+    CANDIDATE --> CLAUSE["get_policy_clause 原文下钻"]
+    CLAUSE --> ANSWER["有来源支持的旅客回复"]
 ```
 
-如果暂时只使用 SQLite，不需要安装 `postgres` extra：
+应用请求不会实时访问官网。官网抓取是显式、可审计的离线导入任务；运行时只访问
+PostgreSQL 中已经版本化的快照切块。
 
-```powershell
-.\.venv\Scripts\python -m pip install -e ".[dev]"
-```
+## 4. 配置文件边界
 
-`.env` 已在 `.gitignore` 中；不要提交真实 API Key。
-
-## 4. 配置真实大模型
-
-编辑 `.env`：
+项目根目录的 `.env` 含真实 Secret，不提交 Git。模板已经切换为 PostgreSQL：
 
 ```dotenv
 AIRLINE_MVP_LLM_BACKEND=openai_compatible
 AIRLINE_MVP_LLM_BASE_URL=
 AIRLINE_MVP_LLM_API_KEY=
 AIRLINE_MVP_LLM_MODEL=
-AIRLINE_MVP_LLM_TEMPERATURE=0
-AIRLINE_MVP_LLM_TIMEOUT_SECONDS=60
-AIRLINE_MVP_LLM_MAX_RETRIES=2
-```
 
-把三个空值填成你自己的信息。`BASE_URL` 应包含服务商要求的 API 根路径，
-常见形式以 `/v1` 结尾。不要把 Chat 网页地址填到这里。
-
-真实模型会参与四个位置：
-
-```mermaid
-flowchart LR
-    U["旅客消息"] --> A["真实 LLM：RequestUnderstanding"]
-    A --> P["确定性 Planner：工具白名单"]
-    P --> D["真实 LLM：DomainDecision"]
-    D --> X["确定性 ToolExecutor"]
-    X --> F["真实 LLM：DomainFinding"]
-    F --> S["真实 LLM：ServiceResponse"]
-    S --> Q["确定性 QualityGate"]
-```
-
-其中 Planner、ToolExecutor 和 QualityGate 仍然是代码规则：
-
-- LLM 不能给自己增加工具；
-- LLM 不能绕过旅客主体校验；
-- 工具输入仍由 Pydantic Schema 校验；
-- LLM 声称“已退款成功”会被 QualityGate 阻断；
-- 人工接管记录仍由 Repository 创建。
-
-启用真实模式后，复杂双领域 Case 会产生多次模型调用：一次理解，每个领域若干
-次工具决策、一次领域汇总，最后一次旅客回复。面试演示前应关注模型费用和速率
-限制；离线 Eval 默认应继续使用 `mock`，保证可重复且不产生费用。
-
-### 模型不支持结构化输出怎么办
-
-`StructuredLLMGateway` 使用 LangChain `with_structured_output`。部分所谓
-OpenAI-compatible 服务只兼容文本对话，不兼容 Tool/JSON Schema。
-这种服务可能在第一次请求时报错。此时需要：
-
-- 换用支持结构化输出的模型/API；
-- 或在 `StructuredLLMGateway._invoke_structured` 后新增该供应商专属 JSON
-  解析 Adapter；
-- 不应静默退回 Mock，因为那会让人误以为真实调用已经成功。
-
-## 5. Docker 启动真实 PostgreSQL
-
-项目提供了完整的 `compose.yaml`，使用固定版本的 PostgreSQL 17 + pgvector。
-Docker 只将端口绑定到 `127.0.0.1`，数据库不会直接暴露到局域网。第一次使用
-空数据卷启动时，会依次执行：
-
-1. `scripts/postgres/00_extensions.sql`：启用 pgvector；
-2. `scripts/postgres/01_schema.sql`：创建 8 张应用运行表和 1 张知识文档表；
-3. `scripts/postgres/02_seed.sql`：写入政策、已回答 Case、人工接管 Case 和 Trace；
-4. `scripts/postgres/03_verify.sql`：检查扩展、表和种子数据是否完整。
-
-在工程目录执行：
-
-```powershell
-docker compose config
-docker compose up -d postgres
-docker compose ps
-docker compose logs postgres
-```
-
-当健康状态变为 `healthy` 后，填写 `.env`：
-
-```dotenv
 AIRLINE_MVP_DATABASE_BACKEND=postgres
 AIRLINE_MVP_DATABASE_URL=postgresql://airline_mvp:airline_mvp_dev@127.0.0.1:5432/airline_mvp
-AIRLINE_MVP_DATABASE_POOL_SIZE=5
-
 AIRLINE_MVP_CHECKPOINT_BACKEND=postgres
 AIRLINE_MVP_CHECKPOINT_DATABASE_URL=
+
+AIRLINE_MVP_KNOWLEDGE_BACKEND=postgres
+AIRLINE_MVP_EMBEDDING_BACKEND=local_fastembed
+AIRLINE_MVP_EMBEDDING_MODEL=BAAI/bge-small-zh-v1.5
+AIRLINE_MVP_EMBEDDING_DIMENSIONS=512
 ```
 
-Checkpoint URL 留空时复用业务数据库 URL。应用启动时会执行：
-
-- 建立真实 psycopg 连接池；
-- 等待数据库可连接；
-- 只使用 `CREATE TABLE/INDEX IF NOT EXISTS` 创建应用表；
-- 调用 `PostgresSaver.setup()` 创建 LangGraph Checkpoint 表；
-- 不执行 DROP、TRUNCATE 或删除迁移。
-
-检查初始化结果：
+如果你已经有 `.env`，在 PowerShell 中显式运行：
 
 ```powershell
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -c "SELECT extversion FROM pg_extension WHERE extname = 'vector';"
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -c "SELECT case_id, status, case_summary FROM cases WHERE case_id LIKE 'seed_case_%' ORDER BY case_id;"
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -c "SELECT document_id, version, domain, status FROM knowledge_documents ORDER BY document_id;"
+.\scripts\enable_postgres_stack.ps1
 ```
 
-### 已经运行过旧版 Compose 时
+这个脚本只修改数据库、Checkpoint、RAG 和 Embedding 相关键，不打印也不重写
+LLM URL、Key 和模型。若数据库账号或端口不是模板值，请在执行后手动调整 URL。
 
-PostgreSQL 官方镜像只在空数据卷首次初始化时自动执行
-`/docker-entrypoint-initdb.d`。如果 `echomind-airline-postgres-data` 卷已经存在，
-不要删除数据卷；启动容器后手动按顺序应用这组幂等脚本：
+## 5. 推荐启动方式：Docker Compose
+
+Docker Compose 包含三个服务：
+
+| 服务 | 作用 | 生命周期 |
+|---|---|---|
+| `postgres` | PostgreSQL 17 + pgvector 0.8.2 | 长期运行 |
+| `knowledge-sync` | 把本地官网快照向量化并增量写入数据库 | 一次性任务 |
+| `api` | FastAPI + LangGraph + 真实 LLM | 长期运行 |
+
+启动：
 
 ```powershell
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/00_extensions.sql
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/01_schema.sql
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/02_seed.sql
-docker compose exec postgres psql -U airline_mvp -d airline_mvp -f /docker-entrypoint-initdb.d/03_verify.sql
+docker compose up --build -d
+docker compose ps
+docker compose logs knowledge-sync
+docker compose logs api
 ```
 
-脚本均使用 `CREATE ... IF NOT EXISTS` 和 `INSERT ... ON CONFLICT DO NOTHING`，
-不会覆盖已有 Case 或政策。当前应用的 RAG 仍使用 Chroma；
-`knowledge_documents.embedding` 只是 pgvector Adapter 的预留字段，不能把表中
-尚未写入的向量误认为已经被在线检索使用。
+第一次启动 FastEmbed 会下载约 90MB 模型。模型缓存在
+`echomind-airline-runtime-data` 命名卷中，容器重建后仍然复用。
+容器将 `AIRLINE_MVP_DATA_DIR` 固定为 `/app/data`，并把 `HOME`、
+`HF_HOME` 和 `XDG_CACHE_HOME` 放到同一个可写 Runtime 卷；这是因为 wheel
+安装后的 Python 模块位于 `site-packages`，不能再用模块路径推导仓库数据目录。
 
-停止服务但保留数据：
+端口安全边界：
+
+- PostgreSQL 仅绑定 `127.0.0.1:5432`；
+- API 默认仅发布到 `127.0.0.1:8000`；宿主端口被占用时可在 `.env` 设置
+  `AIRLINE_MVP_API_HOST_PORT=18000`；
+- 容器内 API 监听 `0.0.0.0`，但宿主机端口不会暴露到局域网。
+
+## 6. 已有 PostgreSQL 命名卷如何升级
+
+Docker 官方镜像只会在空数据卷第一次启动时执行初始化 SQL。已有命名卷不能通过
+删除重建来“解决”迁移，因为其中可能已经有 Case 和 Trace。
+
+本项目提供只增不删的迁移：
 
 ```powershell
-docker compose stop postgres
+docker compose exec -T postgres psql `
+  -U airline_mvp -d airline_mvp `
+  -f /docker-entrypoint-initdb.d/04_migrate_postgres_rag.sql
+
+docker compose exec -T postgres psql `
+  -U airline_mvp -d airline_mvp `
+  -f /docker-entrypoint-initdb.d/02b_seed_extended.sql
 ```
 
-`docker compose down -v` 会删除数据卷，本项目不建议执行。
+迁移只执行 `CREATE EXTENSION IF NOT EXISTS`、`CREATE TABLE IF NOT EXISTS`、
+`ALTER TABLE ADD COLUMN IF NOT EXISTS` 和 `CREATE INDEX IF NOT EXISTS`。
+它不会 `DROP`、`TRUNCATE` 或删除已有记录。
 
-## 6. 原生 Windows 启动 PostgreSQL
+## 7. 数据库内容
 
-如果选择 Windows 安装版，确保 PostgreSQL Service 已启动，再通过 pgAdmin
-或 `psql` 创建开发账号和数据库。示例 SQL：
+### 7.1 业务和审计表
 
-```sql
-CREATE ROLE airline_mvp LOGIN PASSWORD '请替换为你自己的密码';
-CREATE DATABASE airline_mvp OWNER airline_mvp;
-```
+- `conversations`
+- `messages`
+- `cases`
+- `tool_calls`
+- `evidence_items`
+- `service_responses`
+- `handoffs`
+- `trace_events`
 
-然后配置：
+### 7.2 RAG 表
 
-```dotenv
-AIRLINE_MVP_DATABASE_BACKEND=postgres
-AIRLINE_MVP_DATABASE_URL=postgresql://airline_mvp:你的密码@127.0.0.1:5432/airline_mvp
-```
+- `knowledge_sources`：官网 URL、承运人、快照路径、抓取时间、内容 Hash；
+- `knowledge_documents`：版本化切块、有效期、承运人范围、FTS 和 Embedding；
+- `knowledge_ingestion_runs`：每次同步的开始、结束、状态、来源数和切块数。
 
-如果密码包含 `@`、`:`、`/` 等字符，需要先进行 URL 编码。原生服务和 Docker
-默认都使用 5432；二者不要同时绑定同一端口。
+### 7.3 LangGraph 表
 
-## 7. 配置真实 Embedding
+`PostgresSaver.setup()` 会创建 `checkpoints`、`checkpoint_blobs`、
+`checkpoint_writes` 和迁移表。它们与 Case Repository 使用不同协议。
 
-Chroma 本身已经是真实向量数据库，默认保存在：
+### 7.4 演示数据
+
+初始化 SQL 幂等写入 5 类 Case：
+
+1. Journey + Refund 跨域成功调查；
+2. 写操作需要人工接管；
+3. 缺少订单引用需要澄清；
+4. 上游退款系统超时的降级回复；
+5. 无需身份验证的公开航班查询。
+
+Fixture 另外提供 EK302 / PNR `EK7D3M` / TKT3001 / TKT3002，专门用于与
+Emirates 官网政策形成一致的端到端 Demo。
+
+## 8. 官网资料与导入方式
+
+当前白名单包含 6 个 Emirates 中文官网来源：
+
+- [行李指南](https://www.emirates.com/cn/chinese/before-you-fly/baggage/)
+- [客户服务计划](https://www.emirates.com/cn/chinese/information/our-customer-service-plan/)
+- [取消或变更预订 FAQ](https://www.emirates.com/cn/chinese/help/faq-topics/cancelling-or-changing-a-booking/)
+- [托运行李规定](https://www.emirates.com/cn/chinese/before-you-fly/baggage/checked-baggage/)
+- [随身行李规定](https://www.emirates.com/cn/chinese/before-you-fly/baggage/cabin-baggage-rules/)
+- [行李延误或损坏说明](https://www.emirates.com/cn/chinese/before-you-fly/baggage/delayed-damaged-baggage/)
+
+这些页面只服务 EK 场景；代码通过 `carrier_codes` 隔离，不能把它们作为 CZ
+或其他航司的政策回答。
+
+来源清单：
 
 ```text
-.runtime/chroma/
+data/knowledge/airline_mvp/official_sources.json
 ```
 
-默认 Hash Embedding 只适合测试，它不具备生产级语义能力。启用真实向量：
+本地正文快照：
 
-```dotenv
-AIRLINE_MVP_KNOWLEDGE_BACKEND=chroma
-AIRLINE_MVP_EMBEDDING_BACKEND=openai_compatible
-AIRLINE_MVP_EMBEDDING_BASE_URL=
-AIRLINE_MVP_EMBEDDING_API_KEY=
-AIRLINE_MVP_EMBEDDING_MODEL=
-AIRLINE_MVP_EMBEDDING_DIMENSIONS=
+```text
+data/knowledge/airline_mvp/official_snapshots/*.txt
 ```
 
-填入自己的 Embedding API 信息。应用启动时会实际调用 Embedding API 为政策
-文档建索引，查询时也会调用 API 生成 query vector。
+生成后的 24 个切块：
 
-不同模型可能输出不同维数，不能混入同一个 Chroma Collection。代码根据
-`provider + model + dimensions` 创建隔离 Collection，切换模型不会覆盖旧索引。
-API Key 不参与 Collection 名称，也不会写入 Trace。
-
-如果只想验证真实 LLM，不想承担 Embedding 调用：
-
-```dotenv
-AIRLINE_MVP_KNOWLEDGE_BACKEND=chroma
-AIRLINE_MVP_EMBEDDING_BACKEND=mock
+```text
+data/knowledge/airline_mvp/official_policies.json
 ```
 
-这是最适合第一次联调的组合。
-
-## 8. 推荐的渐进式联调顺序
-
-不要一次打开所有真实后端，否则失败时难以定位。
-
-### 第一步：全本地
-
-```dotenv
-AIRLINE_MVP_LLM_BACKEND=mock
-AIRLINE_MVP_DATABASE_BACKEND=sqlite
-AIRLINE_MVP_CHECKPOINT_BACKEND=sqlite
-AIRLINE_MVP_KNOWLEDGE_BACKEND=chroma
-AIRLINE_MVP_EMBEDDING_BACKEND=mock
-```
-
-运行：
+刷新官网快照但不连接数据库：
 
 ```powershell
-.\.venv\Scripts\airline-mvp-demo
-.\.venv\Scripts\pytest
+.\.venv\Scripts\python.exe -B scripts/sync_official_knowledge.py --fetch-only
 ```
 
-### 第二步：只打开真实 LLM
-
-只修改 LLM 四个配置，完成一次 Demo，确认模型支持结构化输出。
-
-### 第三步：打开 PostgreSQL
-
-启动 Docker PostgreSQL，先切业务数据库，再把 Checkpoint 切到 PostgreSQL。
-
-### 第四步：打开真实 Embedding
-
-最后切 Embedding，确认政策检索结果和生效日期过滤仍正确。
-
-## 9. 启动和验证
-
-启动 API：
+只把现有快照同步到 PostgreSQL：
 
 ```powershell
-.\.venv\Scripts\airline-mvp-api
+.\.venv\Scripts\python.exe -B scripts/sync_official_knowledge.py --database-only
 ```
 
-查看实际后端：
+同时刷新并同步：
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8000/health
+.\.venv\Scripts\python.exe -B scripts/sync_official_knowledge.py
 ```
 
-全真实基础设施、航司 API 保持 Fixture 时，应看到类似：
+安全措施：
+
+- URL 来自固定 Manifest，不接受命令行任意 URL；
+- 只允许 `https://www.emirates.com`；
+- 重定向后再次检查 Host；
+- 单页面限制 5MB；
+- 只抽取 `<main>` 中的标题、段落和列表；
+- 只保留配置关键词附近的正文块；
+- 保存抓取时间和 SHA-256；
+- 新版本把旧版本标记为 `superseded`，但不会删除旧快照记录。
+
+## 9. 混合检索实现
+
+`PostgreSQLKnowledgeStore.search()` 执行两路查询：
+
+1. `embedding::vector(512) <=> query::vector(512)`，使用余弦 HNSW；
+2. `search_vector @@ plainto_tsquery('simple', query)`，使用 GIN。
+
+两路结果通过 Reciprocal Rank Fusion 合并：
+
+```text
+RRF score = Σ 1 / (60 + rank)
+```
+
+再对 `airline_official_web`、`official_policy` 和 `approved_faq` 做很小的权威
+等级微调。这里不直接相加 vector distance 和 FTS rank，因为它们不在同一量纲。
+
+检索还强制过滤：
+
+- Domain；
+- `active` 状态；
+- `valid_from` / `valid_to`；
+- 承运人代码；
+- 当前 Embedding Provider 与维数。
+
+通用内部规则使用承运人 `*`。Emirates 官网文档只允许 `EK`。查询 `CZ` 时不会
+召回 Emirates 政策，避免跨航司污染。
+
+## 10. 为什么仍需 `get_policy_clause`
+
+`search_airline_knowledge` 只返回候选摘要。模型随后必须使用候选中的
+`documentId + version + section` 调用 `get_policy_clause`，重新从 PostgreSQL
+读取原文。
+
+Evidence 中会保留：
+
+- `sourceUrl`
+- `sourcePath`
+- `contentSha256`
+- `version`
+- `section`
+- `retrievedAt`
+
+因此摘要不会自动升级成最终事实，关键结论能够回到原始官网页面和本地快照。
+
+## 11. 完整 Demo 请求
+
+```powershell
+$body = @{
+    message = "EK302 航班 2026-08-15 已取消，PNR EK7D3M。请查询 TKT3001 的退款进度，并说明 TKT3002 可以如何退款或改签。"
+    verified_subject_id = "subject_demo"
+} | ConvertTo-Json
+
+$result = Invoke-RestMethod `
+    -Method Post `
+    -Uri http://127.0.0.1:8000/v1/chat `
+    -ContentType "application/json" `
+    -Body $body
+
+$result | ConvertTo-Json -Depth 20
+Invoke-RestMethod "http://127.0.0.1:8000/v1/cases/$($result.case_id)/trace" |
+    ConvertTo-Json -Depth 20
+```
+
+预期健康检查：
 
 ```json
 {
@@ -308,55 +309,70 @@ Invoke-RestMethod http://127.0.0.1:8000/health
   "modelBackend": "openai_compatible",
   "databaseBackend": "postgres",
   "checkpointBackend": "postgres",
-  "knowledgeBackend": "ChromaKnowledgeStore",
-  "embeddingBackend": "openai_compatible",
+  "knowledgeBackend": "PostgreSQLKnowledgeStore",
+  "embeddingBackend": "local_fastembed",
   "airlineApiBackend": "fixture",
-  "writeBusinessToolsEnabled": false
+  "writeBusinessToolsEnabled": false,
+  "rag": {
+    "backend": "PostgreSQLKnowledgeStore",
+    "sources": 14,
+    "activeDocuments": 31,
+    "embeddedDocuments": 32,
+    "vectorExtension": "0.8.2",
+    "hnswIndexes": 1,
+    "hybridSearch": true
+  }
 }
 ```
 
-发起请求：
+其中数量会随官网版本同步而增长；后端类型、vector 扩展、HNSW 索引和混合检索
+标志才是健康检查中的稳定断言。
+
+## 12. 数据库验证命令
 
 ```powershell
-$body = @{
-  message = "CZ3101 航班 2026-07-29 取消，PNR AB12CD。退款 RF9001 为什么没到账？"
-  verified_subject_id = "subject_demo"
-} | ConvertTo-Json
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c `
+  "SELECT COUNT(*) FROM knowledge_documents WHERE embedding IS NOT NULL;"
 
-Invoke-RestMethod `
-  -Method Post `
-  -Uri http://127.0.0.1:8000/v1/chat `
-  -ContentType "application/json" `
-  -Body $body
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c `
+  "SELECT source_id, carrier_code, source_url FROM knowledge_sources ORDER BY source_id;"
+
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c `
+  "SELECT indexname FROM pg_indexes WHERE tablename='knowledge_documents';"
+
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c `
+  "SELECT status, COUNT(*) FROM cases GROUP BY status ORDER BY status;"
+
+docker compose exec postgres psql -U airline_mvp -d airline_mvp -c `
+  "SELECT COUNT(*) FROM checkpoints;"
 ```
 
-随后使用返回的 `case_id` 查看 Trace：
+## 13. 测试
+
+普通测试不会连接 PostgreSQL：
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8000/v1/cases/你的case_id/trace
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\airline-mvp-eval
 ```
 
-## 10. 代码入口
+显式运行真实 pgvector 集成测试：
 
-| 内容 | 文件 |
-|---|---|
-| 环境变量读取和校验 | `src/airline_mvp/config.py` |
-| Mock/真实 LLM | `src/airline_mvp/model_gateway.py` |
-| SQLite/PostgreSQL | `src/airline_mvp/persistence.py` |
-| SQLite/PostgreSQL Checkpoint | `src/airline_mvp/checkpointing.py` |
-| Mock/真实 Embedding 与 Chroma | `src/airline_mvp/knowledge.py` |
-| 所有 Adapter 的统一装配 | `src/airline_mvp/service.py` |
-| 后端状态检查 | `src/airline_mvp/api.py` |
-| PostgreSQL 容器 | `compose.yaml` |
+```powershell
+$env:AIRLINE_MVP_TEST_POSTGRES_URL = `
+  "postgresql://airline_mvp:airline_mvp_dev@127.0.0.1:5432/airline_mvp"
+.\.venv\Scripts\python.exe -m pytest tests/test_postgres_rag_integration.py
+```
 
-## 11. 当前仍有意保留的限制
+## 14. 当前限制
 
-- 航司业务 API 仍是 Fixture，不能查询真实旅客数据；
-- 没有业务写工具，不能实际退票、退款或改签；
-- 数据表当前由仅向前 `CREATE IF NOT EXISTS` 管理，尚未引入 Alembic；
-- API 尚未加入真实 OAuth/OIDC，只用 `verified_subject_id` 模拟认证后的主体；
-- 没有外部可观测平台，Trace 存在应用数据库中；
-- 没有真实人工客服队列，Handoff 只持久化为结构化记录；
-- 真实 LLM/Embedding 的费用、限流和服务可用性由用户选择的供应商决定。
+- 官网抓取目前只支持白名单中的 Emirates 中文网页，不处理 PDF 和 JavaScript
+  动态 API；
+- PostgreSQL FTS 的 `simple` 配置对中文分词有限，中文召回主要依赖真实
+  Embedding，FTS 作为精确英文/编号补充；
+- 官网内容适用于 Emirates，不能回答 CZ 等其他航司的专属政策；
+- 航司业务 API 仍是 Fixture，因此航班、PNR、客票和退款状态不是实时生产数据；
+- FastEmbed 第一次下载依赖互联网，之后可以离线使用缓存；
+- 当前 MVP 不执行退票、改签或补偿写操作。
 
-这些限制不会伪装成已实现能力，`/health` 会明确展示当前真实后端。
+这些限制都是显式边界，不会通过 Mock 回退或自然语言进行掩盖。

@@ -1,7 +1,6 @@
 {
-  "datasetVersion": "airline-mvp-v1",
-  "generatedAt": "2026-07-29T00:00:00+08:00",
+  "datasetVersion": "airline-mvp-v2",
+  "generatedAt": "2026-08-03T16:30:00+08:00",
   "synthetic": true,
   "description": "Synthetic airline records for the interview MVP"
 }
-

@@ -1,0 +1,62 @@
+[
+  {
+    "sourceId": "emirates_baggage_overview",
+    "title": "阿联酋航空行李指南",
+    "url": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/",
+    "carrierCodes": ["EK"],
+    "domains": ["baggage"],
+    "documentType": "official_web_guide",
+    "locale": "zh-CN",
+    "keywords": ["行李", "托运行李", "随身行李", "行李限额", "特殊行李"]
+  },
+  {
+    "sourceId": "emirates_customer_service_plan",
+    "title": "阿联酋航空客户服务计划",
+    "url": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "carrierCodes": ["EK"],
+    "domains": ["journey", "refund", "baggage"],
+    "documentType": "official_service_plan",
+    "locale": "zh-CN",
+    "keywords": ["退款", "退票", "延误", "取消", "改签", "行李", "投诉"]
+  },
+  {
+    "sourceId": "emirates_change_cancel_faq",
+    "title": "阿联酋航空取消或变更预订常见问题",
+    "url": "https://www.emirates.com/cn/chinese/help/faq-topics/cancelling-or-changing-a-booking/",
+    "carrierCodes": ["EK"],
+    "domains": ["journey", "refund"],
+    "documentType": "official_faq",
+    "locale": "zh-CN",
+    "keywords": ["取消", "变更", "退款", "退票", "预订", "机票"]
+  },
+  {
+    "sourceId": "emirates_checked_baggage",
+    "title": "阿联酋航空托运行李规定",
+    "url": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/checked-baggage/",
+    "carrierCodes": ["EK"],
+    "domains": ["baggage"],
+    "documentType": "official_web_guide",
+    "locale": "zh-CN",
+    "keywords": ["托运行李", "行李限额", "重量", "件数", "尺寸"]
+  },
+  {
+    "sourceId": "emirates_cabin_baggage",
+    "title": "阿联酋航空随身行李规定",
+    "url": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/cabin-baggage-rules/",
+    "carrierCodes": ["EK"],
+    "domains": ["baggage"],
+    "documentType": "official_web_guide",
+    "locale": "zh-CN",
+    "keywords": ["随身行李", "手提行李", "重量", "尺寸", "客舱"]
+  },
+  {
+    "sourceId": "emirates_delayed_damaged_baggage",
+    "title": "阿联酋航空行李延误或损坏说明",
+    "url": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/delayed-damaged-baggage/",
+    "carrierCodes": ["EK"],
+    "domains": ["baggage"],
+    "documentType": "official_web_guide",
+    "locale": "zh-CN",
+    "keywords": ["行李", "延误", "损坏", "追踪", "报告", "申报"]
+  }
+]

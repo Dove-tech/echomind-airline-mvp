@@ -7,29 +7,36 @@
 - `JourneyServiceAgent`：只读查询航班、PNR、客票、航变和相关知识；
 - `RefundServiceAgent`：只读查询退款、支付链路和相关知识；
 - 统一 Tool Registry：Schema、域权限、身份边界、超时重试和标准状态；
-- RAG：真实本地 Chroma 或内存检索；Embedding 可选 Mock Hash/真实 API；
-- 数据库：默认 SQLite，可切换本机或 Docker 中的真实 PostgreSQL；
-- 模型：默认确定性 Mock，可切换任意 OpenAI-compatible Chat API；
+- 原生 Function Calling：真实模型只提议工具和扁平参数，执行权仍在服务端；
+- RAG：PostgreSQL FTS + pgvector + RRF，支持官网快照、版本和原文下钻；
+- Embedding：默认真实本地 FastEmbed 中文模型，也可切换远程 API；
+- 数据库：业务数据、Trace、知识和 LangGraph Checkpoint 全部使用 PostgreSQL；
+- 模型：面试运行档使用 OpenAI-compatible Chat API，离线测试使用确定性 Mock；
 - Quality Gate：硬规则阻止无证据引用和“已退款/已改签”等越权宣称；
 - Offline Eval：路由、轨迹、证据和安全指标分别评分。
 
-## 快速开始
+## 快速开始：完整真实基础设施
 
-Windows PowerShell：
+先复制配置模板，并在 `.env` 中保留/填写你自己的真实 LLM URL、Key 和模型：
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python -m pip install -e ".[dev]"
-.\.venv\Scripts\airline-mvp-demo
-.\.venv\Scripts\airline-mvp-eval
-.\.venv\Scripts\pytest
+.\.venv\Scripts\python -m pip install -e ".[dev,offline]"
+Copy-Item .env.example .env
+.\scripts\enable_postgres_stack.ps1
+docker compose up --build -d
 ```
 
-启动 API（仅在你明确需要服务时运行）：
+第一次启动会下载约 90MB 的中文 Embedding 模型，然后把 6 个官网来源、24 个
+官网切块和 8 条内部规则同步到 PostgreSQL。检查状态：
 
 ```powershell
-.\.venv\Scripts\airline-mvp-api
+docker compose ps
+Invoke-RestMethod http://127.0.0.1:8000/health
 ```
+
+若 8000 已被本机其他服务占用，在 `.env` 中设置
+`AIRLINE_MVP_API_HOST_PORT=18000`，并将下方请求地址改为 18000。
 
 然后可调用：
 
@@ -44,34 +51,27 @@ GET  /health
 
 ```json
 {
-  "message": "CZ3101 航班 2026-07-29 取消，PNR AB12CD。一张票退款未到账，另一张请帮我退票。",
+  "message": "EK302 航班 2026-08-15 已取消，PNR EK7D3M。请查询 TKT3001 的退款进度，并说明 TKT3002 可以如何退款或改签。",
   "verified_subject_id": "subject_demo"
 }
 ```
 
-项目默认使用确定性 Model Gateway，因此没有模型 Key 也能跑完整闭环。它只替代
-LLM 的意图/工具决策，业务事实仍必须由工具与 RAG 返回。真实模型接入点是
+离线测试仍显式使用确定性 Model Gateway，不访问开发者 `.env` 或 PostgreSQL；
+面试运行档使用真实模型。真实模型接入点是
 `StructuredLLMGateway`；真实模式会参与理解、工具决策、调查结论和最终旅客
-回复，但不会绕过 ToolExecutor、Evidence 和 QualityGate。
+回复。其中领域工具决策使用原生 Function Calling，其他模型边界使用结构化
+输出；两者都不会绕过 ToolExecutor、Evidence 和 QualityGate。
 
-## 切换真实基础设施
-
-```powershell
-Copy-Item .env.example .env
-```
-
-然后在 `.env` 中填写你自己的 URL、Key 和模型名。PostgreSQL 支持原生
-Windows 服务和 Docker；本项目更推荐 Docker：
+## 离线测试与 Eval
 
 ```powershell
-docker compose up -d postgres
-.\.venv\Scripts\python -m pip install -e ".[dev,postgres]"
+.\.venv\Scripts\python -m pytest
+.\.venv\Scripts\airline-mvp-eval
 ```
 
-容器使用 PostgreSQL 17 + pgvector。空数据卷首次启动时会自动创建应用表、
-知识文档表，并写入 2 个演示 Case、8 条政策和对应 Trace。初始化 SQL 位于
-`scripts/postgres/`；当前 RAG 运行时仍默认使用 Chroma，PostgreSQL 知识表是
-后续 pgvector Adapter 的持久化落点。
+容器使用 PostgreSQL 17 + pgvector 0.8.2。空数据卷会创建业务、Trace、知识、
+导入审计和 LangGraph Checkpoint 表，并写入 5 类演示 Case。已有数据卷通过
+`04_migrate_postgres_rag.sql` 只做前向迁移，不会删除记录。
 
 完整配置、原理、验证方式和 Windows/Docker 取舍见：
 [真实基础设施接入指南](docs/REAL_BACKENDS_GUIDE.md)。
@@ -79,13 +79,14 @@ docker compose up -d postgres
 ## 阅读顺序
 
 1. [完整设计](docs/DESIGN.md)
-2. [代码与设计章节映射](docs/CODE_DESIGN_MAP.md)
-3. `src/airline_mvp/parent_graph.py`
-4. `src/airline_mvp/worker_graph.py`
-5. `src/airline_mvp/tools.py`
-6. `src/airline_mvp/evidence.py`
-7. `src/airline_mvp/evaluation.py`
-8. `src/airline_mvp/config.py`
+2. [Function Calling 改造与完整链路](docs/FUNCTION_CALLING_ARCHITECTURE.md)
+3. [代码与设计章节映射](docs/CODE_DESIGN_MAP.md)
+4. `src/airline_mvp/parent_graph.py`
+5. `src/airline_mvp/worker_graph.py`
+6. `src/airline_mvp/tools.py`
+7. `src/airline_mvp/evidence.py`
+8. `src/airline_mvp/evaluation.py`
+9. `src/airline_mvp/config.py`
 
 ## 安全边界
 

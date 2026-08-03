@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+import pytest
+
 from airline_mvp.fixtures import AirlineFixtureStore
 from airline_mvp.knowledge import LocalKnowledgeStore, KnowledgeService, load_policy_documents
 from airline_mvp.models import DomainName, ToolExecutionContext, ToolStatus
@@ -62,6 +64,84 @@ def test_refund_agent_cannot_call_journey_tool() -> None:
     )
     assert result.status == ToolStatus.DENIED
     assert result.error_code == "TOOL_NOT_ALLOWED"
+
+
+def test_function_call_schema_is_generated_from_runtime_input_model() -> None:
+    fixtures = AirlineFixtureStore()
+    knowledge = KnowledgeService(LocalKnowledgeStore(load_policy_documents()))
+    registry = build_tool_registry(fixtures, knowledge)
+
+    schemas = registry.function_call_schemas(
+        domain=DomainName.JOURNEY,
+        allowed_tools=["get_flight_status"],
+    )
+
+    function = schemas[0]["function"]
+    assert function["name"] == "get_flight_status"
+    assert set(function["parameters"]["required"]) == {"flight_no", "date"}
+    assert function["parameters"]["additionalProperties"] is False
+
+
+def test_function_call_schema_rejects_cross_domain_exposure() -> None:
+    fixtures = AirlineFixtureStore()
+    knowledge = KnowledgeService(LocalKnowledgeStore(load_policy_documents()))
+    registry = build_tool_registry(fixtures, knowledge)
+
+    with pytest.raises(ValueError, match="不允许由 refund Agent 使用"):
+        registry.function_call_schemas(
+            domain=DomainName.REFUND,
+            allowed_tools=["get_flight_status"],
+        )
+
+
+def test_local_test_rag_is_not_labeled_as_postgresql() -> None:
+    """离线测试的 Evidence 来源必须诚实反映 Local RAG Adapter。"""
+
+    fixtures = AirlineFixtureStore()
+    knowledge = KnowledgeService(LocalKnowledgeStore(load_policy_documents()))
+    registry = build_tool_registry(fixtures, knowledge)
+
+    definition = registry.get("search_airline_knowledge")
+
+    assert definition is not None
+    assert definition.source_system == "local_rag"
+
+
+def test_tool_executor_rejects_legacy_wrapped_function_arguments() -> None:
+    """防止旧式 ``parameters`` 包装再次被误当作真实业务参数。"""
+
+    result = _executor().execute(
+        domain=DomainName.JOURNEY,
+        allowed_tools=["get_flight_status"],
+        tool_name="get_flight_status",
+        arguments={
+            "tool_name": "get_flight_status",
+            "parameters": {
+                "flight_no": "CZ8888",
+                "date": "2026-07-29",
+            },
+        },
+        context=_context("subject_demo"),
+    )
+
+    assert result.status == ToolStatus.INVALID_INPUT
+    assert result.error_code == "INPUT_SCHEMA_INVALID"
+
+
+def test_knowledge_arguments_are_canonicalized_by_server_policy() -> None:
+    executor = _executor()
+    canonical = executor.canonicalize_arguments(
+        domain=DomainName.JOURNEY,
+        tool_name="search_airline_knowledge",
+        arguments={
+            "query": "EK302 航班取消后的退款和改签规定",
+            "domains": ["hallucinated_policy_domain"],
+            "as_of": "2026-08-15",
+        },
+    )
+
+    assert canonical["domains"] == ["journey", "disruption", "ticketing"]
+    assert canonical["carrier_codes"] == ["EK"]
 
 
 def test_rag_filters_expired_policy_and_supports_exact_drilldown() -> None:

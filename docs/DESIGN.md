@@ -19,8 +19,8 @@ MVP 的价值不是替旅客自动改签或退款，而是把跨系统调查变�
 - Journey 与 Refund 两个运行域；
 - 当前有效政策检索和原文引用；
 - 缺参澄清、失败降级、人工接管；
-- 航司 Fixture，以及可切换的 Mock/真实 LLM、SQLite/PostgreSQL、
-  Mock/真实 Embedding 和 Chroma；
+- 航司 Fixture、真实 OpenAI-compatible LLM、PostgreSQL 业务库与 Checkpoint、
+  FastEmbed 和 PostgreSQL FTS + pgvector RAG；
 - API、CLI、Trace 和固定评测集。
 
 不包含：
@@ -34,8 +34,8 @@ MVP 的价值不是替旅客自动改签或退款，而是把跨系统调查变�
 
 主 Demo：
 
-1. 旅客说明 `CZ3101 / 2026-07-29 / PNR AB12CD`，一张票退款未到账，
-   另一张希望退票。
+1. 旅客说明 `EK302 / 2026-08-15 / PNR EK7D3M`，查询一张票的退款进度，
+   并咨询另一张票的退改选项。
 2. Coordinator 识别 Journey + Refund 两个独立调查任务。
 3. 两个领域 Worker 并行读取航班/客票和退款/支付系统。
 4. 每个 Worker 在自己的业务域内检索政策候选，再下钻确切版本与章节。
@@ -84,14 +84,14 @@ flowchart LR
     R --> TR
     TR --> SO["Flight / PNR / Ticket / Refund Fixtures"]
     TR --> KS["Knowledge Service"]
-    KS --> CH["Chroma 或 Local Vector Store"]
-    CH --> EM["Hash 或真实 Embedding API"]
+    KS --> PGV["PostgreSQL FTS + pgvector + RRF"]
+    PGV --> EM["FastEmbed 或真实 Embedding API"]
     J --> EV["Evidence Adapter"]
     R --> EV
     EV --> C
     C --> Q["Deterministic Quality Gate"]
     Q --> H["Idempotent Human Handoff"]
-    P --> DB["SQLite 或 PostgreSQL<br/>Case / Trace / Evidence"]
+    P --> DB["PostgreSQL<br/>Case / Trace / Evidence / Checkpoint"]
 ```
 
 ## §8. Agent Runtime 与模型无关性
@@ -236,15 +236,17 @@ Pydantic 参数校验 → Adapter → 标准化结果 → Trace/Evidence。
 
 RAG 在各业务域内部作为工具，不单独创建 Knowledge Agent：
 
-1. Query + Domain + `as_of` 进入 `search_airline_knowledge`；
-2. Store 先过滤域、有效期和 active 状态；
-3. 返回候选文档坐标、authority、score 和摘要；
-4. Worker 必须调用 `get_policy_clause(documentId, version, section)`；
-5. 最终回答只引用下钻后的原始条款 Evidence。
+1. Query + Domain + Carrier + `as_of` 进入 `search_airline_knowledge`；
+2. Store 先过滤域、承运人、有效期和 active 状态；
+3. pgvector 与 FTS 分别召回，再通过 RRF 融合；
+4. 返回候选文档坐标、authority、URL、Hash、score 和摘要；
+5. Worker 必须调用 `get_policy_clause(documentId, version, section)`；
+6. 最终回答只引用下钻后的原始条款 Evidence。
 
-可使用持久化 Chroma 或 LocalKnowledgeStore。Embedding 默认使用确定性
-Hash + Cosine，真实模式通过 OpenAI-compatible Embedding API 生成语义向量。
-不同模型使用隔离 Chroma Collection，避免向量维数冲突。
+面试运行档统一使用 PostgreSQL；Embedding 默认由本地 FastEmbed
+`BAAI/bge-small-zh-v1.5` 生成，也可切换 OpenAI-compatible API。
+Hash + LocalKnowledgeStore 只用于离线测试。官网快照保留 URL、抓取时间和
+SHA-256，旧版本标记 `superseded` 但不删除。
 
 ## §17. API 与 Checkpoint
 
@@ -256,10 +258,10 @@ API 仅做传输层：
 - `GET /health`
 
 每个 Case 使用自己的 LangGraph `thread_id`，避免不同 Case 的 Reducer 状态互相污染。
-默认使用 `SqliteSaver`；真实部署可使用 `PostgresSaver`，测试也可显式使用
-MemorySaver。Checkpoint 和业务表仍是两个独立协议。
+面试运行档使用 `PostgresSaver`，测试显式使用 MemorySaver。Checkpoint 和
+业务表仍是两个独立协议。
 
-## §18. SQLite/PostgreSQL 数据与 Case Summary
+## §18. PostgreSQL 数据与 Case Summary
 
 表：Conversation、Message、Case、ToolCall、EvidenceItem、ServiceResponse、
 Handoff、TraceEvent。
@@ -270,8 +272,8 @@ Handoff、TraceEvent。
 - Checkpoint 用于图恢复；
 - `case_summary` 只保存稳定摘要，不把全部历史重新注入每次 Prompt。
 
-Schema 只执行 `CREATE TABLE/INDEX IF NOT EXISTS`，没有删除数据的运行时 API。
-PostgreSQL 模式使用 psycopg 连接池，并用事务级 advisory lock 生成有序 Trace。
+Schema 只执行前向 CREATE/ALTER，没有删除数据的运行时 API。PostgreSQL 使用
+psycopg 连接池，并用事务级 advisory lock 生成有序 Trace。SQLite 只保留给测试。
 
 ## §19. Evidence 与 Quality
 
@@ -373,7 +375,7 @@ Case 内严格递增序号，可通过 API 回放。
 - 参数 Schema 和 Adapter 错误收口；
 - Evidence 引用和越权话术硬校验；
 - Handoff 幂等；
-- SQLite/PostgreSQL 审计记录和可查询后端健康状态。
+- PostgreSQL 审计记录和可查询后端健康状态。
 
 生产补充：
 

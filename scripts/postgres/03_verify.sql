@@ -13,7 +13,9 @@ BEGIN
 
     IF to_regclass('public.cases') IS NULL
        OR to_regclass('public.trace_events') IS NULL
-       OR to_regclass('public.knowledge_documents') IS NULL THEN
+       OR to_regclass('public.knowledge_documents') IS NULL
+       OR to_regclass('public.knowledge_sources') IS NULL
+       OR to_regclass('public.knowledge_ingestion_runs') IS NULL THEN
         RAISE EXCEPTION 'one or more required tables are missing';
     END IF;
 
@@ -24,8 +26,8 @@ BEGIN
     SELECT COUNT(*) INTO policy_count
     FROM knowledge_documents;
 
-    IF seed_case_count < 2 THEN
-        RAISE EXCEPTION 'expected at least 2 seeded cases, got %', seed_case_count;
+    IF seed_case_count < 5 THEN
+        RAISE EXCEPTION 'expected at least 5 seeded cases, got %', seed_case_count;
     END IF;
 
     IF policy_count < 8 THEN

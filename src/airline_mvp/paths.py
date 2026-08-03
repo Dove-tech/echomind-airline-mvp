@@ -36,7 +36,7 @@ RUNTIME_ROOT = _configured_path(
 def ensure_runtime_dirs() -> None:
     """只创建当前工程内部的 Runtime 目录。
 
-    设计 §6 和 §21 在该新工程内使用 SQLite/Chroma Runtime。本函数绝不会
+    离线测试和 FastEmbed 模型缓存使用工程内 Runtime。本函数绝不会
     修改 PostgreSQL、Clowder、EchoMind、Redis 或任何已有持久化数据库。
     """
 

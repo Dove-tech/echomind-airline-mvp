@@ -116,17 +116,33 @@ CREATE INDEX IF NOT EXISTS idx_trace_trace_id
     ON trace_events(trace_id);
 
 -- =============================================================================
--- 二、RAG 知识文档表（pgvector 就绪，但当前应用默认仍使用 Chroma）
+-- 二、RAG 来源、知识切块与导入审计
 --
--- embedding 不固定维数，是为了同时容纳 256 维 Mock Hash Embedding 和用户选择的
--- 真实 Embedding 模型。正式建立 HNSW/IVFFlat 索引前，应按模型和维数隔离数据。
--- 当前表先承担政策原文、版本、生效期和来源坐标的可靠存储职责。
+-- embedding 保持可变维数，使本地 FastEmbed 与远程 Embedding 模型能够按维数
+-- 共存。应用会为当前实际维数创建表达式 HNSW 索引。
 -- =============================================================================
+
+CREATE TABLE IF NOT EXISTS knowledge_sources (
+    source_id TEXT PRIMARY KEY,
+    carrier_code TEXT NOT NULL,
+    title TEXT NOT NULL,
+    source_url TEXT NOT NULL,
+    document_type TEXT NOT NULL,
+    locale TEXT NOT NULL,
+    status TEXT NOT NULL,
+    retrieved_at TIMESTAMPTZ,
+    content_sha256 TEXT NOT NULL,
+    local_path TEXT,
+    metadata_json TEXT NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS knowledge_documents (
     document_id TEXT NOT NULL,
     version TEXT NOT NULL,
     section TEXT NOT NULL,
+    source_id TEXT,
     title TEXT NOT NULL,
     domain TEXT NOT NULL,
     document_type TEXT NOT NULL,
@@ -136,12 +152,17 @@ CREATE TABLE IF NOT EXISTS knowledge_documents (
     status TEXT NOT NULL,
     locale TEXT NOT NULL,
     content TEXT NOT NULL,
+    carrier_codes TEXT[] NOT NULL DEFAULT ARRAY['*']::TEXT[],
     source_locator TEXT NOT NULL,
     metadata_json TEXT NOT NULL DEFAULT '{}',
     embedding_provider TEXT,
     embedding_model TEXT,
     embedding_dimensions INTEGER,
     embedding VECTOR,
+    content_sha256 TEXT,
+    search_vector TSVECTOR GENERATED ALWAYS AS (
+        to_tsvector('simple', coalesce(title, '') || ' ' || coalesce(content, ''))
+    ) STORED,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(document_id, version, section)
@@ -151,10 +172,29 @@ CREATE INDEX IF NOT EXISTS idx_knowledge_domain_status_validity
     ON knowledge_documents(domain, status, valid_from, valid_to);
 CREATE INDEX IF NOT EXISTS idx_knowledge_authority
     ON knowledge_documents(authority);
+CREATE INDEX IF NOT EXISTS idx_knowledge_carrier_codes
+    ON knowledge_documents USING GIN(carrier_codes);
+CREATE INDEX IF NOT EXISTS idx_knowledge_search_vector
+    ON knowledge_documents USING GIN(search_vector);
+
+CREATE TABLE IF NOT EXISTS knowledge_ingestion_runs (
+    run_id TEXT PRIMARY KEY,
+    status TEXT NOT NULL,
+    embedding_provider TEXT NOT NULL,
+    source_count INTEGER NOT NULL DEFAULT 0,
+    chunk_count INTEGER NOT NULL DEFAULT 0,
+    started_at TIMESTAMPTZ NOT NULL,
+    completed_at TIMESTAMPTZ,
+    error_summary TEXT
+);
 
 COMMENT ON TABLE knowledge_documents IS
-    '政策原文和可选向量；当前 Chroma Adapter 尚未切换到本表';
+    '航空政策原文切块、全文检索列和 pgvector 语义向量';
 COMMENT ON COLUMN knowledge_documents.source_locator IS
     '能够回到原始政策文件和章节的 JSON 字符串，不允许只保存模型摘要';
 COMMENT ON COLUMN knowledge_documents.embedding IS
     '可为空；写入向量时必须同时记录 provider、model 和 dimensions';
+COMMENT ON TABLE knowledge_sources IS
+    '官网或内部知识来源清单，保存 URL、本地快照和内容 Hash';
+COMMENT ON TABLE knowledge_ingestion_runs IS
+    '每次知识同步的成功/失败审计记录';

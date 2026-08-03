@@ -45,8 +45,8 @@ python -B scripts/run_demo.py
 
 Demo 使用的问题是：
 
-> CZ3101 航班 2026-07-29 取消了，PNR AB12CD。
-> 其中一张票退款还没到账，另一张怎么办？请帮我退票。
+> EK302 航班 2026-08-15 取消了，PNR EK7D3M。
+> 请查询 TKT3001 的退款进度，并说明 TKT3002 可以如何退款或改签。
 
 运行后第一遍只观察三个内容：
 
@@ -56,9 +56,9 @@ Demo 使用的问题是：
 
 暂时不要研究：
 
-- SQLite 表结构；
+- PostgreSQL 表结构；
 - Checkpoint 内部格式；
-- Chroma 内部实现；
+- pgvector/FTS 索引内部实现；
 - 所有 Pydantic Model；
 - 完整 Eval 指标。
 
@@ -402,7 +402,7 @@ get_policy_clause
 
 - `checkpointing.py`
 - `persistence.py` 中的 SQL Schema 细节
-- Chroma 内部 API
+- pgvector、HNSW 和 FTS 查询细节
 - `evaluation.py` 的具体指标计算
 - Baggage 扩展配置
 - FastAPI 依赖注入细节
@@ -512,4 +512,3 @@ ToolExecutor
 | 如何进行离线评测 | §24 |
 
 设计文档应该作为“查阅手册”，而不是第一次阅读项目时的入口。
-

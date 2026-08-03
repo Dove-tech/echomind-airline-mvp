@@ -104,17 +104,26 @@ class PaymentInput(StrictToolInput):
         return self
 
 
-class KnowledgeSearchInput(BaseModel):
-    query: str = Field(min_length=2)
-    domains: list[str] = Field(min_length=1)
-    as_of: str
-    top_k: int = Field(default=3, ge=1, le=6)
+class KnowledgeSearchInput(StrictToolInput):
+    query: str = Field(min_length=2, description="用于检索政策和 FAQ 的自然语言问题")
+    domains: list[str] = Field(
+        min_length=1,
+        description="只能使用当前业务 Agent 配置的知识域",
+    )
+    as_of: str = Field(description="政策生效日期，格式为 YYYY-MM-DD")
+    top_k: int = Field(default=3, ge=1, le=6, description="返回候选数量")
+    carrier_codes: list[str] = Field(
+        default_factory=list,
+        description=(
+            "承运人二字代码，例如 EK；有航班号时必须填写，防止引用其他航司政策"
+        ),
+    )
 
 
-class PolicyClauseInput(BaseModel):
-    document_id: str
-    version: str
-    section: str
+class PolicyClauseInput(StrictToolInput):
+    document_id: str = Field(description="必须来自知识检索候选的文档 ID")
+    version: str = Field(description="必须来自知识检索候选的政策版本")
+    section: str = Field(description="必须来自知识检索候选的章节坐标")
 
 
 ToolHandler = Callable[[BaseModel, ToolExecutionContext], tuple[ToolStatus, dict[str, Any], list[str]]]
@@ -331,7 +340,7 @@ class ToolExecutor:
                     data=data,
                     warnings=warnings,
                     attempt=attempt,
-                    system=f"fixture_{tool_name}",
+                    system=f"{definition.source_system}_{tool_name}",
                 )
 
         raise AssertionError("Tool retry loop did not return")
@@ -459,7 +468,13 @@ def build_tool_registry(
         data: BaseModel, _context: ToolExecutionContext
     ) -> tuple[ToolStatus, dict[str, Any], list[str]]:
         args = KnowledgeSearchInput.model_validate(data)
-        hits = knowledge.search(args.query, args.domains, args.as_of, args.top_k)
+        hits = knowledge.search(
+            args.query,
+            args.domains,
+            args.as_of,
+            args.top_k,
+            args.carrier_codes,
+        )
         return (
             (ToolStatus.SUCCESS, {"results": hits}, [])
             if hits
@@ -543,6 +558,7 @@ def build_tool_registry(
             all_domains,
             "policy_candidate",
             search_knowledge,
+            source_system=knowledge.source_system,
         ),
         ToolDefinition(
             "get_policy_clause",
@@ -552,6 +568,7 @@ def build_tool_registry(
             all_domains,
             "policy",
             get_clause,
+            source_system=knowledge.source_system,
         ),
     ]
     for definition in definitions:

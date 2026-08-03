@@ -33,9 +33,84 @@ services:
     shm_size: 256mb
     stop_grace_period: 20s
 
+  knowledge-sync:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: echomind-airline-mvp:local
+    container_name: echomind-airline-knowledge-sync
+    env_file:
+      - .env
+    environment:
+      # 同步任务不调用 Chat LLM，只执行本地 Embedding 和 PostgreSQL upsert。
+      AIRLINE_MVP_LLM_BACKEND: mock
+      AIRLINE_MVP_DATABASE_BACKEND: postgres
+      AIRLINE_MVP_DATABASE_URL: postgresql://${AIRLINE_MVP_POSTGRES_USER:-airline_mvp}:${AIRLINE_MVP_POSTGRES_PASSWORD:-airline_mvp_dev}@postgres:5432/${AIRLINE_MVP_POSTGRES_DB:-airline_mvp}
+      AIRLINE_MVP_CHECKPOINT_BACKEND: memory
+      AIRLINE_MVP_KNOWLEDGE_BACKEND: postgres
+      AIRLINE_MVP_EMBEDDING_BACKEND: local_fastembed
+      AIRLINE_MVP_EMBEDDING_MODEL: BAAI/bge-small-zh-v1.5
+      AIRLINE_MVP_EMBEDDING_DIMENSIONS: 512
+      # wheel 安装后的 __file__ 位于 site-packages，因此容器必须显式声明数据目录。
+      AIRLINE_MVP_DATA_DIR: /app/data
+      AIRLINE_MVP_RUNTIME_DIR: /app/.runtime
+    command: ["python", "-B", "scripts/sync_official_knowledge.py", "--database-only"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - airline_runtime_data:/app/.runtime
+    restart: "no"
+
+  api:
+    image: echomind-airline-mvp:local
+    container_name: echomind-airline-api
+    env_file:
+      - .env
+    environment:
+      AIRLINE_MVP_DATABASE_BACKEND: postgres
+      AIRLINE_MVP_DATABASE_URL: postgresql://${AIRLINE_MVP_POSTGRES_USER:-airline_mvp}:${AIRLINE_MVP_POSTGRES_PASSWORD:-airline_mvp_dev}@postgres:5432/${AIRLINE_MVP_POSTGRES_DB:-airline_mvp}
+      AIRLINE_MVP_CHECKPOINT_BACKEND: postgres
+      AIRLINE_MVP_CHECKPOINT_DATABASE_URL: postgresql://${AIRLINE_MVP_POSTGRES_USER:-airline_mvp}:${AIRLINE_MVP_POSTGRES_PASSWORD:-airline_mvp_dev}@postgres:5432/${AIRLINE_MVP_POSTGRES_DB:-airline_mvp}
+      AIRLINE_MVP_KNOWLEDGE_BACKEND: postgres
+      AIRLINE_MVP_EMBEDDING_BACKEND: local_fastembed
+      AIRLINE_MVP_EMBEDDING_MODEL: BAAI/bge-small-zh-v1.5
+      AIRLINE_MVP_EMBEDDING_DIMENSIONS: 512
+      AIRLINE_MVP_DATA_DIR: /app/data
+      AIRLINE_MVP_RUNTIME_DIR: /app/.runtime
+      AIRLINE_MVP_API_HOST: 0.0.0.0
+      AIRLINE_MVP_API_PORT: 8000
+    ports:
+      - "127.0.0.1:${AIRLINE_MVP_API_HOST_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      knowledge-sync:
+        condition: service_completed_successfully
+    volumes:
+      - airline_runtime_data:/app/.runtime
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+
 volumes:
   airline_postgres_data:
     name: echomind-airline-postgres-data
     labels:
       com.echomind.project: airline-mvp
       com.echomind.purpose: persistent-postgresql-data
+  airline_runtime_data:
+    name: echomind-airline-runtime-data
+    labels:
+      com.echomind.project: airline-mvp
+      com.echomind.purpose: fastembed-model-cache

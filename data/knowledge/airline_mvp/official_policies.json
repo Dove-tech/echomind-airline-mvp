@@ -1,0 +1,722 @@
+[
+  {
+    "documentId": "emirates_baggage_overview",
+    "version": "2026-08-03.4511c9c3766f",
+    "title": "阿联酋航空行李指南",
+    "domain": "baggage",
+    "documentType": "official_web_guide",
+    "authority": "airline_official_web",
+    "validFrom": "2020-06-21",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-001",
+    "locale": "zh-CN",
+    "text": "延误和损坏的行李\n购买额外行李限额\n特殊行李及特别行李额度",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/",
+    "sourcePath": "official_snapshots/emirates_baggage_overview.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "c67102a0c4f7b27d9ff687817171519cc8b438afdba7d9ae8d78bc7e9fac158b",
+    "metadata": {
+      "sourceId": "emirates_baggage_overview",
+      "pageTitle": "行李 | 起飞前 | 阿联酋航空 中",
+      "publishedAt": "2020-06-21",
+      "sourceContentSha256": "4511c9c3766fcf6bd1d9c8c8862824c6b8b4e16a6f65d6f757128738b910c9d1",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 1
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "journey",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-001",
+    "locale": "zh-CN",
+    "text": "请注意，此承诺仅限于针对你所要求的特定机场和行程类型提供最低公布票价。我们不会搜索或报出其他行程的票价，也不会合并单独的单程票。\n告知乘客已知的航班延误、取消和改航\n虽然我们始终致力于载你准时到达目的地，但有时天气、空中交通管制或其他运营因素可能导致航班取消、改航或延误。一旦遭遇这类情况，我们将在得知航班取消、改航或者延误 30 分钟或更长时间后的 30 分钟内，为你提供前往或离开美国的相应航班的最新准确信息。\n我们将通过以下途径向你提供这些信息：\n若你已订阅阿联酋航空的航班状态通知，则通过电子邮件和阿联酋航空移动 APP 通知。\n我们始终努力在航班抵达后及时交付行李。\n如果你的行李并未随你一起到达，请到行李服务柜台咨询阿联酋航空代表，并填写行李遗失报告。依照《美国联邦法典》第 14 篇第 260.5 小节的要求，我们将尽一切合理的努力，在 15 或 30 小时内把你的行李送达你的最终目的地，具体时间取决于你乘坐阿联酋航空航班期间，在美国和外国出发地/目的地之间最后一个直飞航段的飞航时长。请注意，如果你的航程涉及其他航空公司，你可能会遇到稍长时间的延误。\n如果你因行李延误而产生费用，并且有资格获得补偿，我们将遵照适用的国际协议，在国际限额内，补偿你合理和必要的自付费用。\n如果行李严重延误或遗失，我们也将退还你为运输行李支付的额外费用。对于直接付给我们的代码共享或联运合作伙伴的额外费用，请直接与其联系和协商退款事宜。\n预订后 24 小时内申请退款\n按原始付款方式及时进行机票退款\n如果你的航班被取消、严重延误或变更，我们提供替代承运方式或其他形式的补偿，而非退款，我们将依照《美国联邦法典》第 14 篇第 260 部分，告知你享有拒绝任何替代承运方式并获得退款的权利。到应退款之时，我们将立即按原始付款方式向你退还机票费用以及航班相关的自选服务费用，包括托运行李费。\n如果你是通过第三方旅游网站、旅行社，或者我们的代码共享或联运合作伙伴购买的机票，请直接与其联系，商讨你的选择或要求退款。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "a445ff865909f3a55edadc32f8d3a0605d5b871663898433e115b01389ddd45c",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "journey",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-002",
+    "locale": "zh-CN",
+    "text": "如果你是通过第三方旅游网站、旅行社，或者我们的代码共享或联运合作伙伴购买的机票，请直接与其联系，商讨你的选择或要求退款。\n如果你使用了信用卡购票，我们将在申请退款后七个工作日内向相应的信用卡发行机构提交退款申请。信用卡发行机构将根据信用卡协议的条款，原价退款。请注意，你的信用卡账单可能不会立即反映出退款。对于以现金、支票、借记卡或其他付款方式进行的购票，我们将在申请退款后的 20 个日历日内为你退款。\n对于其他所有退款申请，我们将在收到申请后，立即为符合条件的机票和自选服务收费退款。如果你是直接通过阿联酋航空购买的机票，可使用我们的 在线退款申请表 （在同一标签页中打开链接） 申请退款。退款将依照票价细则以及自选服务的条款与细则发放。\n因严重传染病而予以退票\n如果你是直接从阿联酋航空或通过第三方旅行网站或旅行社购买的机票，且阿联酋航空为该航班的实际承运方，则在下列情形下，你可以申请按原始付款方式退款：\n鉴于美国或外国政府对严重传染病的防控，你不得前往/离开美国或在美国境内旅行，或者在行程表所示目的地的隔离时间必须达到行期的 50% 以上，并且你的机票是在相关政府宣布突发公共卫生事件或实施相关旅行限制举措之前购买的\n鉴于你接触过或可能接触过严重传染病，乘坐商业航班可能会直接威胁到他人的健康，执业医疗专业人员建议你不要乘飞机旅行\n作为予以退款的条件，我们需要 14 CFR 262.5 许可的相关文件资料来确认退款资格（例如政府命令、执业医疗专业人员的书面声明）。\n如果机票是直接从阿联酋航空预订的，你可以使用我们的 在线退款申请表 来申请退款。请在备注部分注明“传染病”，并附上必要的证明文件资料，以帮助我们处理你的申请。备注一定要填写最新信息，并附上有效的文件资料，以便我们根据 14 CFR 262 处理你的申请。\n如果你的机票是通过第三方旅行网站或旅行社购买的， 请联系我们的呼叫中心 申请退款。如果你的机票是通过我们的代码共享或联运合作伙伴购买的，请直接与他们联系以讨论你的选择。\n请注意，只有符合 14 CFR 262 的退款标准，方可办理退款。\n妥善照顾残障乘客",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "be2ad24dd2476400d8a563a16420522efbd466f8f5b336b8308ad89bac090e9b",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 2,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "journey",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-003",
+    "locale": "zh-CN",
+    "text": "妥善照顾残障乘客\n我们为残障乘客提供的各项服务详见 无障碍旅行页面 （在同一标签页中打开页面） 。\n在阿联酋航空运营往来于美国的航班的每个机场，我们都设有经过培训的员工来担任投诉解决官员 (CRO)。我们的 CRO 经过培训，符合《美国联邦法典》第 14 篇第 382 部分，将在工作时间内亲自或通过电话提供服务\n如果残障乘客的航班发生重大变更，而其选择不继续旅行，我们将予以退款。此外，根据《美国联邦法典》第 14 篇第 260.6 小节的规定，如果同一预订内包含的其他任何个人不愿在残障乘客不同行的情况下继续旅行，我们将予以退款。\n你可以在 美国交通部网站 （在新标签页中打开外部网站） ﻿ 上查阅《美国航空公司残疾乘客权利法案》。\n在美国机场停机坪长时间延误期间满足乘客的基本需求\n我们尽全力为乘客维护可靠的时刻表。然而，安全考量、天气状况、空中交通管制和其他运营因素偶尔会导致地面上的长时间延误。我们已经制定了计划和程序，力争尽量减少这种延误。\n如果在美国机场出现停机坪长时间延误，在安全和安保考量允许的情况下，我们将尽一切合理努力满足乘客的基本需求。这包括按特定时间间隔提供食物和水，配备洗手间设施，以及充分提供医疗援助。\n如需了解更多信息，请参阅 阿联酋航空停机坪延误应急计划 （在同一标签页中打开页面） 。\n在美国机场航班超售的情况下，始终如一地公平对待乘客\n如果你的航班超售，我们首先会请求乘客自愿放弃已确认的座位，以此换取补偿（数额由阿联酋航空决定），之后再乘坐指定的航班，在此之前，我们不会拒绝向你提供座位。若无足够多自愿放弃座位的乘客，我们将根据阿联酋航空的优先登机政策，拒绝相应的乘客登机。若你非自愿被拒绝登机，并且遵守了我们的值机及其他适用的条款与细则，我们将向你提供一份书面声明，其中会解释你享有的权利以及我们对超售航班实施的优先登机政策。根据《美国联邦法典》第 14 篇第 250 部分的要求，你通常有权获得补偿并乘坐替代航班。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "d5b3231ac94f44d58f5472500bfa6f55f8a17be2a2944e10d4794f8b2c19537d",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 3,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "journey",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-004",
+    "locale": "zh-CN",
+    "text": "如果你的航班超售，我们首先会请求乘客自愿放弃已确认的座位，以此换取补偿（数额由阿联酋航空决定），之后再乘坐指定的航班，在此之前，我们不会拒绝向你提供座位。若无足够多自愿放弃座位的乘客，我们将根据阿联酋航空的优先登机政策，拒绝相应的乘客登机。若你非自愿被拒绝登机，并且遵守了我们的值机及其他适用的条款与细则，我们将向你提供一份书面声明，其中会解释你享有的权利以及我们对超售航班实施的优先登机政策。根据《美国联邦法典》第 14 篇第 250 部分的要求，你通常有权获得补偿并乘坐替代航班。\n对于不符合阿联酋航空预订和值机要求的乘客，或者依照 阿联酋航空乘客和行李承运条款 （在新标签页中打开 PDF） 中概述的条款与细则我们无法承运的乘客，我们将不给予补偿。\n我们的补偿支付规则和优先登机政策适用于我们服务的每个美国机场。\n披露退款和取消政策、飞行常旅客规则、飞机配置和洗手间可用性\n我们将在我们的网站上提供对你可能重要的政策和服务方面的明确信息。我们的客服中心也可应你的要求提供这些信息。这意味着提供以下方面的明确信息：\n飞机配置和洗手间可用性 （在同一标签页中打开页面） 。\n适用于你的机票和旅行的重要条款与细则，包括退款和取消政策。\n我们也在我们的网站上、注册计划时提供的材料以及向阿联酋航空 Skywards 会员提供的更新中，提供有关 阿联酋航空 Skywards 忠诚计划 （在同一标签页中打开链接） 的信息。\n对于通过第三方旅游网站或旅行社预订，但未向我们提供联系方式的乘客，我们将直接通过阿联酋航空的预订系统通知旅行社或旅行代理。\n确保乘客投诉得到答复\n你可以通过 反馈或投诉页面 （在同一标签页中打开页面） 、所有机票确认函，以及在我们服务的机场提出请求，了解书面投诉的提交方式。你亦可来函至：\nEmirates Customer Affairs Emirates Group Headquarters PO Box 686 Dubai, UAE\n我们将在收到后的 30 天内确认书面投诉，在收到后的 60 天内发出实质性答复。\n确定服务，以减少取消和误机造成的不便",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "05e370aaa0209c832058e09c6bb68350bc45e0c2062511babaafd70d4e73cb52",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 4,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "journey",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-005",
+    "locale": "zh-CN",
+    "text": "确定服务，以减少取消和误机造成的不便\n在航班取消前，使用你的预订或阿联酋航空 Skywards 个人资料中提供的联系方式，尽一切努力与你取得联系。\n若你需要重新预订，我们将确认我们运营的下一航班是否有相同舱位的座位。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "318f9aaf95de5b29265be69733483bf9feb727f2b959de7a2fbffa16d390a869",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 5,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "refund",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-001",
+    "locale": "zh-CN",
+    "text": "请注意，此承诺仅限于针对你所要求的特定机场和行程类型提供最低公布票价。我们不会搜索或报出其他行程的票价，也不会合并单独的单程票。\n告知乘客已知的航班延误、取消和改航\n虽然我们始终致力于载你准时到达目的地，但有时天气、空中交通管制或其他运营因素可能导致航班取消、改航或延误。一旦遭遇这类情况，我们将在得知航班取消、改航或者延误 30 分钟或更长时间后的 30 分钟内，为你提供前往或离开美国的相应航班的最新准确信息。\n我们将通过以下途径向你提供这些信息：\n若你已订阅阿联酋航空的航班状态通知，则通过电子邮件和阿联酋航空移动 APP 通知。\n我们始终努力在航班抵达后及时交付行李。\n如果你的行李并未随你一起到达，请到行李服务柜台咨询阿联酋航空代表，并填写行李遗失报告。依照《美国联邦法典》第 14 篇第 260.5 小节的要求，我们将尽一切合理的努力，在 15 或 30 小时内把你的行李送达你的最终目的地，具体时间取决于你乘坐阿联酋航空航班期间，在美国和外国出发地/目的地之间最后一个直飞航段的飞航时长。请注意，如果你的航程涉及其他航空公司，你可能会遇到稍长时间的延误。\n如果你因行李延误而产生费用，并且有资格获得补偿，我们将遵照适用的国际协议，在国际限额内，补偿你合理和必要的自付费用。\n如果行李严重延误或遗失，我们也将退还你为运输行李支付的额外费用。对于直接付给我们的代码共享或联运合作伙伴的额外费用，请直接与其联系和协商退款事宜。\n预订后 24 小时内申请退款\n按原始付款方式及时进行机票退款\n如果你的航班被取消、严重延误或变更，我们提供替代承运方式或其他形式的补偿，而非退款，我们将依照《美国联邦法典》第 14 篇第 260 部分，告知你享有拒绝任何替代承运方式并获得退款的权利。到应退款之时，我们将立即按原始付款方式向你退还机票费用以及航班相关的自选服务费用，包括托运行李费。\n如果你是通过第三方旅游网站、旅行社，或者我们的代码共享或联运合作伙伴购买的机票，请直接与其联系，商讨你的选择或要求退款。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "a445ff865909f3a55edadc32f8d3a0605d5b871663898433e115b01389ddd45c",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "refund",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-002",
+    "locale": "zh-CN",
+    "text": "如果你是通过第三方旅游网站、旅行社，或者我们的代码共享或联运合作伙伴购买的机票，请直接与其联系，商讨你的选择或要求退款。\n如果你使用了信用卡购票，我们将在申请退款后七个工作日内向相应的信用卡发行机构提交退款申请。信用卡发行机构将根据信用卡协议的条款，原价退款。请注意，你的信用卡账单可能不会立即反映出退款。对于以现金、支票、借记卡或其他付款方式进行的购票，我们将在申请退款后的 20 个日历日内为你退款。\n对于其他所有退款申请，我们将在收到申请后，立即为符合条件的机票和自选服务收费退款。如果你是直接通过阿联酋航空购买的机票，可使用我们的 在线退款申请表 （在同一标签页中打开链接） 申请退款。退款将依照票价细则以及自选服务的条款与细则发放。\n因严重传染病而予以退票\n如果你是直接从阿联酋航空或通过第三方旅行网站或旅行社购买的机票，且阿联酋航空为该航班的实际承运方，则在下列情形下，你可以申请按原始付款方式退款：\n鉴于美国或外国政府对严重传染病的防控，你不得前往/离开美国或在美国境内旅行，或者在行程表所示目的地的隔离时间必须达到行期的 50% 以上，并且你的机票是在相关政府宣布突发公共卫生事件或实施相关旅行限制举措之前购买的\n鉴于你接触过或可能接触过严重传染病，乘坐商业航班可能会直接威胁到他人的健康，执业医疗专业人员建议你不要乘飞机旅行\n作为予以退款的条件，我们需要 14 CFR 262.5 许可的相关文件资料来确认退款资格（例如政府命令、执业医疗专业人员的书面声明）。\n如果机票是直接从阿联酋航空预订的，你可以使用我们的 在线退款申请表 来申请退款。请在备注部分注明“传染病”，并附上必要的证明文件资料，以帮助我们处理你的申请。备注一定要填写最新信息，并附上有效的文件资料，以便我们根据 14 CFR 262 处理你的申请。\n如果你的机票是通过第三方旅行网站或旅行社购买的， 请联系我们的呼叫中心 申请退款。如果你的机票是通过我们的代码共享或联运合作伙伴购买的，请直接与他们联系以讨论你的选择。\n请注意，只有符合 14 CFR 262 的退款标准，方可办理退款。\n妥善照顾残障乘客",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "be2ad24dd2476400d8a563a16420522efbd466f8f5b336b8308ad89bac090e9b",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 2,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "refund",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-003",
+    "locale": "zh-CN",
+    "text": "妥善照顾残障乘客\n我们为残障乘客提供的各项服务详见 无障碍旅行页面 （在同一标签页中打开页面） 。\n在阿联酋航空运营往来于美国的航班的每个机场，我们都设有经过培训的员工来担任投诉解决官员 (CRO)。我们的 CRO 经过培训，符合《美国联邦法典》第 14 篇第 382 部分，将在工作时间内亲自或通过电话提供服务\n如果残障乘客的航班发生重大变更，而其选择不继续旅行，我们将予以退款。此外，根据《美国联邦法典》第 14 篇第 260.6 小节的规定，如果同一预订内包含的其他任何个人不愿在残障乘客不同行的情况下继续旅行，我们将予以退款。\n你可以在 美国交通部网站 （在新标签页中打开外部网站） ﻿ 上查阅《美国航空公司残疾乘客权利法案》。\n在美国机场停机坪长时间延误期间满足乘客的基本需求\n我们尽全力为乘客维护可靠的时刻表。然而，安全考量、天气状况、空中交通管制和其他运营因素偶尔会导致地面上的长时间延误。我们已经制定了计划和程序，力争尽量减少这种延误。\n如果在美国机场出现停机坪长时间延误，在安全和安保考量允许的情况下，我们将尽一切合理努力满足乘客的基本需求。这包括按特定时间间隔提供食物和水，配备洗手间设施，以及充分提供医疗援助。\n如需了解更多信息，请参阅 阿联酋航空停机坪延误应急计划 （在同一标签页中打开页面） 。\n在美国机场航班超售的情况下，始终如一地公平对待乘客\n如果你的航班超售，我们首先会请求乘客自愿放弃已确认的座位，以此换取补偿（数额由阿联酋航空决定），之后再乘坐指定的航班，在此之前，我们不会拒绝向你提供座位。若无足够多自愿放弃座位的乘客，我们将根据阿联酋航空的优先登机政策，拒绝相应的乘客登机。若你非自愿被拒绝登机，并且遵守了我们的值机及其他适用的条款与细则，我们将向你提供一份书面声明，其中会解释你享有的权利以及我们对超售航班实施的优先登机政策。根据《美国联邦法典》第 14 篇第 250 部分的要求，你通常有权获得补偿并乘坐替代航班。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "d5b3231ac94f44d58f5472500bfa6f55f8a17be2a2944e10d4794f8b2c19537d",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 3,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "refund",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-004",
+    "locale": "zh-CN",
+    "text": "如果你的航班超售，我们首先会请求乘客自愿放弃已确认的座位，以此换取补偿（数额由阿联酋航空决定），之后再乘坐指定的航班，在此之前，我们不会拒绝向你提供座位。若无足够多自愿放弃座位的乘客，我们将根据阿联酋航空的优先登机政策，拒绝相应的乘客登机。若你非自愿被拒绝登机，并且遵守了我们的值机及其他适用的条款与细则，我们将向你提供一份书面声明，其中会解释你享有的权利以及我们对超售航班实施的优先登机政策。根据《美国联邦法典》第 14 篇第 250 部分的要求，你通常有权获得补偿并乘坐替代航班。\n对于不符合阿联酋航空预订和值机要求的乘客，或者依照 阿联酋航空乘客和行李承运条款 （在新标签页中打开 PDF） 中概述的条款与细则我们无法承运的乘客，我们将不给予补偿。\n我们的补偿支付规则和优先登机政策适用于我们服务的每个美国机场。\n披露退款和取消政策、飞行常旅客规则、飞机配置和洗手间可用性\n我们将在我们的网站上提供对你可能重要的政策和服务方面的明确信息。我们的客服中心也可应你的要求提供这些信息。这意味着提供以下方面的明确信息：\n飞机配置和洗手间可用性 （在同一标签页中打开页面） 。\n适用于你的机票和旅行的重要条款与细则，包括退款和取消政策。\n我们也在我们的网站上、注册计划时提供的材料以及向阿联酋航空 Skywards 会员提供的更新中，提供有关 阿联酋航空 Skywards 忠诚计划 （在同一标签页中打开链接） 的信息。\n对于通过第三方旅游网站或旅行社预订，但未向我们提供联系方式的乘客，我们将直接通过阿联酋航空的预订系统通知旅行社或旅行代理。\n确保乘客投诉得到答复\n你可以通过 反馈或投诉页面 （在同一标签页中打开页面） 、所有机票确认函，以及在我们服务的机场提出请求，了解书面投诉的提交方式。你亦可来函至：\nEmirates Customer Affairs Emirates Group Headquarters PO Box 686 Dubai, UAE\n我们将在收到后的 30 天内确认书面投诉，在收到后的 60 天内发出实质性答复。\n确定服务，以减少取消和误机造成的不便",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "05e370aaa0209c832058e09c6bb68350bc45e0c2062511babaafd70d4e73cb52",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 4,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "refund",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-005",
+    "locale": "zh-CN",
+    "text": "确定服务，以减少取消和误机造成的不便\n在航班取消前，使用你的预订或阿联酋航空 Skywards 个人资料中提供的联系方式，尽一切努力与你取得联系。\n若你需要重新预订，我们将确认我们运营的下一航班是否有相同舱位的座位。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "318f9aaf95de5b29265be69733483bf9feb727f2b959de7a2fbffa16d390a869",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 5,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "baggage",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-001",
+    "locale": "zh-CN",
+    "text": "请注意，此承诺仅限于针对你所要求的特定机场和行程类型提供最低公布票价。我们不会搜索或报出其他行程的票价，也不会合并单独的单程票。\n告知乘客已知的航班延误、取消和改航\n虽然我们始终致力于载你准时到达目的地，但有时天气、空中交通管制或其他运营因素可能导致航班取消、改航或延误。一旦遭遇这类情况，我们将在得知航班取消、改航或者延误 30 分钟或更长时间后的 30 分钟内，为你提供前往或离开美国的相应航班的最新准确信息。\n我们将通过以下途径向你提供这些信息：\n若你已订阅阿联酋航空的航班状态通知，则通过电子邮件和阿联酋航空移动 APP 通知。\n我们始终努力在航班抵达后及时交付行李。\n如果你的行李并未随你一起到达，请到行李服务柜台咨询阿联酋航空代表，并填写行李遗失报告。依照《美国联邦法典》第 14 篇第 260.5 小节的要求，我们将尽一切合理的努力，在 15 或 30 小时内把你的行李送达你的最终目的地，具体时间取决于你乘坐阿联酋航空航班期间，在美国和外国出发地/目的地之间最后一个直飞航段的飞航时长。请注意，如果你的航程涉及其他航空公司，你可能会遇到稍长时间的延误。\n如果你因行李延误而产生费用，并且有资格获得补偿，我们将遵照适用的国际协议，在国际限额内，补偿你合理和必要的自付费用。\n如果行李严重延误或遗失，我们也将退还你为运输行李支付的额外费用。对于直接付给我们的代码共享或联运合作伙伴的额外费用，请直接与其联系和协商退款事宜。\n预订后 24 小时内申请退款\n按原始付款方式及时进行机票退款\n如果你的航班被取消、严重延误或变更，我们提供替代承运方式或其他形式的补偿，而非退款，我们将依照《美国联邦法典》第 14 篇第 260 部分，告知你享有拒绝任何替代承运方式并获得退款的权利。到应退款之时，我们将立即按原始付款方式向你退还机票费用以及航班相关的自选服务费用，包括托运行李费。\n如果你是通过第三方旅游网站、旅行社，或者我们的代码共享或联运合作伙伴购买的机票，请直接与其联系，商讨你的选择或要求退款。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "a445ff865909f3a55edadc32f8d3a0605d5b871663898433e115b01389ddd45c",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "baggage",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-002",
+    "locale": "zh-CN",
+    "text": "如果你是通过第三方旅游网站、旅行社，或者我们的代码共享或联运合作伙伴购买的机票，请直接与其联系，商讨你的选择或要求退款。\n如果你使用了信用卡购票，我们将在申请退款后七个工作日内向相应的信用卡发行机构提交退款申请。信用卡发行机构将根据信用卡协议的条款，原价退款。请注意，你的信用卡账单可能不会立即反映出退款。对于以现金、支票、借记卡或其他付款方式进行的购票，我们将在申请退款后的 20 个日历日内为你退款。\n对于其他所有退款申请，我们将在收到申请后，立即为符合条件的机票和自选服务收费退款。如果你是直接通过阿联酋航空购买的机票，可使用我们的 在线退款申请表 （在同一标签页中打开链接） 申请退款。退款将依照票价细则以及自选服务的条款与细则发放。\n因严重传染病而予以退票\n如果你是直接从阿联酋航空或通过第三方旅行网站或旅行社购买的机票，且阿联酋航空为该航班的实际承运方，则在下列情形下，你可以申请按原始付款方式退款：\n鉴于美国或外国政府对严重传染病的防控，你不得前往/离开美国或在美国境内旅行，或者在行程表所示目的地的隔离时间必须达到行期的 50% 以上，并且你的机票是在相关政府宣布突发公共卫生事件或实施相关旅行限制举措之前购买的\n鉴于你接触过或可能接触过严重传染病，乘坐商业航班可能会直接威胁到他人的健康，执业医疗专业人员建议你不要乘飞机旅行\n作为予以退款的条件，我们需要 14 CFR 262.5 许可的相关文件资料来确认退款资格（例如政府命令、执业医疗专业人员的书面声明）。\n如果机票是直接从阿联酋航空预订的，你可以使用我们的 在线退款申请表 来申请退款。请在备注部分注明“传染病”，并附上必要的证明文件资料，以帮助我们处理你的申请。备注一定要填写最新信息，并附上有效的文件资料，以便我们根据 14 CFR 262 处理你的申请。\n如果你的机票是通过第三方旅行网站或旅行社购买的， 请联系我们的呼叫中心 申请退款。如果你的机票是通过我们的代码共享或联运合作伙伴购买的，请直接与他们联系以讨论你的选择。\n请注意，只有符合 14 CFR 262 的退款标准，方可办理退款。\n妥善照顾残障乘客",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "be2ad24dd2476400d8a563a16420522efbd466f8f5b336b8308ad89bac090e9b",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 2,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "baggage",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-003",
+    "locale": "zh-CN",
+    "text": "妥善照顾残障乘客\n我们为残障乘客提供的各项服务详见 无障碍旅行页面 （在同一标签页中打开页面） 。\n在阿联酋航空运营往来于美国的航班的每个机场，我们都设有经过培训的员工来担任投诉解决官员 (CRO)。我们的 CRO 经过培训，符合《美国联邦法典》第 14 篇第 382 部分，将在工作时间内亲自或通过电话提供服务\n如果残障乘客的航班发生重大变更，而其选择不继续旅行，我们将予以退款。此外，根据《美国联邦法典》第 14 篇第 260.6 小节的规定，如果同一预订内包含的其他任何个人不愿在残障乘客不同行的情况下继续旅行，我们将予以退款。\n你可以在 美国交通部网站 （在新标签页中打开外部网站） ﻿ 上查阅《美国航空公司残疾乘客权利法案》。\n在美国机场停机坪长时间延误期间满足乘客的基本需求\n我们尽全力为乘客维护可靠的时刻表。然而，安全考量、天气状况、空中交通管制和其他运营因素偶尔会导致地面上的长时间延误。我们已经制定了计划和程序，力争尽量减少这种延误。\n如果在美国机场出现停机坪长时间延误，在安全和安保考量允许的情况下，我们将尽一切合理努力满足乘客的基本需求。这包括按特定时间间隔提供食物和水，配备洗手间设施，以及充分提供医疗援助。\n如需了解更多信息，请参阅 阿联酋航空停机坪延误应急计划 （在同一标签页中打开页面） 。\n在美国机场航班超售的情况下，始终如一地公平对待乘客\n如果你的航班超售，我们首先会请求乘客自愿放弃已确认的座位，以此换取补偿（数额由阿联酋航空决定），之后再乘坐指定的航班，在此之前，我们不会拒绝向你提供座位。若无足够多自愿放弃座位的乘客，我们将根据阿联酋航空的优先登机政策，拒绝相应的乘客登机。若你非自愿被拒绝登机，并且遵守了我们的值机及其他适用的条款与细则，我们将向你提供一份书面声明，其中会解释你享有的权利以及我们对超售航班实施的优先登机政策。根据《美国联邦法典》第 14 篇第 250 部分的要求，你通常有权获得补偿并乘坐替代航班。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "d5b3231ac94f44d58f5472500bfa6f55f8a17be2a2944e10d4794f8b2c19537d",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 3,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "baggage",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-004",
+    "locale": "zh-CN",
+    "text": "如果你的航班超售，我们首先会请求乘客自愿放弃已确认的座位，以此换取补偿（数额由阿联酋航空决定），之后再乘坐指定的航班，在此之前，我们不会拒绝向你提供座位。若无足够多自愿放弃座位的乘客，我们将根据阿联酋航空的优先登机政策，拒绝相应的乘客登机。若你非自愿被拒绝登机，并且遵守了我们的值机及其他适用的条款与细则，我们将向你提供一份书面声明，其中会解释你享有的权利以及我们对超售航班实施的优先登机政策。根据《美国联邦法典》第 14 篇第 250 部分的要求，你通常有权获得补偿并乘坐替代航班。\n对于不符合阿联酋航空预订和值机要求的乘客，或者依照 阿联酋航空乘客和行李承运条款 （在新标签页中打开 PDF） 中概述的条款与细则我们无法承运的乘客，我们将不给予补偿。\n我们的补偿支付规则和优先登机政策适用于我们服务的每个美国机场。\n披露退款和取消政策、飞行常旅客规则、飞机配置和洗手间可用性\n我们将在我们的网站上提供对你可能重要的政策和服务方面的明确信息。我们的客服中心也可应你的要求提供这些信息。这意味着提供以下方面的明确信息：\n飞机配置和洗手间可用性 （在同一标签页中打开页面） 。\n适用于你的机票和旅行的重要条款与细则，包括退款和取消政策。\n我们也在我们的网站上、注册计划时提供的材料以及向阿联酋航空 Skywards 会员提供的更新中，提供有关 阿联酋航空 Skywards 忠诚计划 （在同一标签页中打开链接） 的信息。\n对于通过第三方旅游网站或旅行社预订，但未向我们提供联系方式的乘客，我们将直接通过阿联酋航空的预订系统通知旅行社或旅行代理。\n确保乘客投诉得到答复\n你可以通过 反馈或投诉页面 （在同一标签页中打开页面） 、所有机票确认函，以及在我们服务的机场提出请求，了解书面投诉的提交方式。你亦可来函至：\nEmirates Customer Affairs Emirates Group Headquarters PO Box 686 Dubai, UAE\n我们将在收到后的 30 天内确认书面投诉，在收到后的 60 天内发出实质性答复。\n确定服务，以减少取消和误机造成的不便",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "05e370aaa0209c832058e09c6bb68350bc45e0c2062511babaafd70d4e73cb52",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 4,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_customer_service_plan",
+    "version": "2026-08-03.598018910144",
+    "title": "阿联酋航空客户服务计划",
+    "domain": "baggage",
+    "documentType": "official_service_plan",
+    "authority": "airline_official_web",
+    "validFrom": "2025-01-21",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-005",
+    "locale": "zh-CN",
+    "text": "确定服务，以减少取消和误机造成的不便\n在航班取消前，使用你的预订或阿联酋航空 Skywards 个人资料中提供的联系方式，尽一切努力与你取得联系。\n若你需要重新预订，我们将确认我们运营的下一航班是否有相同舱位的座位。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/information/our-customer-service-plan/",
+    "sourcePath": "official_snapshots/emirates_customer_service_plan.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "318f9aaf95de5b29265be69733483bf9feb727f2b959de7a2fbffa16d390a869",
+    "metadata": {
+      "sourceId": "emirates_customer_service_plan",
+      "pageTitle": "Our Customer Service Plan | 阿联酋航空网站政策及信息 | 阿联酋航空 中",
+      "publishedAt": "2025-01-21",
+      "sourceContentSha256": "59801891014447e9d8269f0631cc072147685f436b1fcac51e1384baa5d23870",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 5,
+      "chunkCount": 5
+    }
+  },
+  {
+    "documentId": "emirates_change_cancel_faq",
+    "version": "2026-08-03.eafdf1e31806",
+    "title": "阿联酋航空取消或变更预订常见问题",
+    "domain": "journey",
+    "documentType": "official_faq",
+    "authority": "airline_official_web",
+    "validFrom": "2026-07-01",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-001",
+    "locale": "zh-CN",
+    "text": "取消阿联酋航空航班预订\n我可以取消预订吗？\n可以，你可以前往 emirates.com，通过 管理预订 对预订进行更改。\n我们目前接到许多来电，因此，为了避免长时间等候，请使用下列其他方式 联系我们 。你也可以尝试在你计划的旅行日期临近时致电我们。\n完成预订之后，我如何在线更改行程信息？\n你可以通过“管理预订”更改你的预订。请注意，如果你的预订符合在线更改的条件，你将找到“更改我的预订”链接。根据你的机票票价规则，我们可能需要向你收取某些更改费用。\n如果你的预订不符合在线更改的条件，你可以联系旅行代理，或者如果你是直接通过我们预订的，则可致电我们的联络中心。\n如果你想对合作伙伴航空公司的奖励预订进行更改，请 联系 阿联酋航空 Skywards 团队。\n改签机票要缴纳费用吗？\n根据机票的票价规则，变更预订可能需要收取某些费用。如果你前往 emirates.com 通过 管理预订 进行更改，你会发现哪些费用将适用于扣费或附加税。如果你计划预订的新行程的票价高于已经支付的票价，你也需要支付差价。你需要在线支付费用和票价差额，方可完成机票更改。\n我可以在线对已部分使用的机票进行更改吗？\n可以，根据你的机票票价规则，你可以通过 管理预订 进行在线更改，即使你已飞完部分航程。\n如果已变更预订并应获得退款，会怎么样？\n如果你 通过emirates.com做出变更后 ，符合退款条件（比如未使用税费），我们将把一张贷记单（EMD）发送至你的邮箱。该贷记单的有效期为自发放日期起（比如自你更改预订之日起）一年内有效。\n该贷记单可用于未来的阿联酋航空预订，或者凭贷记单申请退款。\n请联系你的 当地阿联酋航空办事处 ，将此贷记单用于未来的阿联酋航空预订，或者 填写我们的退款表 以接收退款。\n我可以只为预订中的一位乘客进行在线更改吗？\n不可以，你的任何在线更改都将适用于预订中的每位乘客。若想只为一人更改航班，则需要 联系我们 或为你预订的旅行代理。\n但是，如果你希望为个别乘客更改座位、预订特殊膳食或增添服务，则可以通过 管理预订 来完成。\n我可以在网上更改以里程或奖励积分进行的预订吗？",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/help/faq-topics/cancelling-or-changing-a-booking/",
+    "sourcePath": "official_snapshots/emirates_change_cancel_faq.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "b008f0298a28f0dca851e7f37e8f2fe08183287f0cf6ee3f95270d76f2fcf6bc",
+    "metadata": {
+      "sourceId": "emirates_change_cancel_faq",
+      "pageTitle": "取消或变更预订 | 常见问题 | 帮助和支持 | 阿联酋航空 中",
+      "publishedAt": "2026-07-01",
+      "sourceContentSha256": "eafdf1e31806ac79d42cbd641371d1af3f5f2ecce4b19e87221629e95a07cbb5",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 2
+    }
+  },
+  {
+    "documentId": "emirates_change_cancel_faq",
+    "version": "2026-08-03.eafdf1e31806",
+    "title": "阿联酋航空取消或变更预订常见问题",
+    "domain": "journey",
+    "documentType": "official_faq",
+    "authority": "airline_official_web",
+    "validFrom": "2026-07-01",
+    "validTo": null,
+    "status": "active",
+    "section": "journey.web-002",
+    "locale": "zh-CN",
+    "text": "我可以在网上更改以里程或奖励积分进行的预订吗？\n可以，你可以通过 访问“管理预订” ，在网上更改以 Skywards 里程或阿联酋航空企业商务奖励积分进行的预订。\n如果航班变更，我的专车接送预订会怎样？\n如果变更前的航班已预订专车接送服务，这些预订将被取消。\n你需要 通过管理预订 为新航班预订专车接送服务，阿联酋境内须提前至少12小时，其他城市须提前24小时。\n如果我已通过emirates.com申请阿联酋签证，然后进行了航班变更，会怎么样？\n如果你已通过emirates.com申请阿联酋签证，请确保签证适用于新的旅行日期。如果你的签证已经得到批准，其有效期为自批准日期起60日。\n变更预订之后，座位或餐食方面会怎样？\n如果变更前的航段已选择座位或餐食，这些选择将不会保留。请 通过管理预订 ，为新的航班做出选择。\n如果取消网上预订，可以获得退款吗？\n可以，只要符合票价规则，你即可获得全额退款。我们会将票款退还至你购票时所使用的银行卡上。\n如果你仍然想取消，可通过 管理预订 进行，然后填写我们的 退款表格 即可。首先查看你的票价规则，因为部分机票不支持退款，或者可能存在取消费用。\n未使用或仅部分使用的机票如何退款？\n若想对未使用的机票申请退款，你可以前往 管理预订 取消机票，并填写我们的 退款表格 。取决于你的票价规则，我们将把票款退还至你用来购票的银行卡上。\n对于部分机票，一旦你开始旅行便不可退款，也可能存在取消费用，或者仅一部分票价可退款。\n什么是“票价规则”？\n所有航班机票都随附有“票价规则”，并由其确定机票的价格。这些规则包括机票是否可以全额退款，或者进行更改时是否需要额外收费。\n不同的票价会有不同的规则。预订前请务必点击“票价规则”，或询问你的旅行代理。\n所有常见问题主题\n手机和阿联酋航空 APP\n阿联酋航空办事处预订\n阿联酋航空商务奖励",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/help/faq-topics/cancelling-or-changing-a-booking/",
+    "sourcePath": "official_snapshots/emirates_change_cancel_faq.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "f8dc8b72b1a5108ae07089d2b170203697b2158e8b50fbc42ce12af15da237a4",
+    "metadata": {
+      "sourceId": "emirates_change_cancel_faq",
+      "pageTitle": "取消或变更预订 | 常见问题 | 帮助和支持 | 阿联酋航空 中",
+      "publishedAt": "2026-07-01",
+      "sourceContentSha256": "eafdf1e31806ac79d42cbd641371d1af3f5f2ecce4b19e87221629e95a07cbb5",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 2,
+      "chunkCount": 2
+    }
+  },
+  {
+    "documentId": "emirates_change_cancel_faq",
+    "version": "2026-08-03.eafdf1e31806",
+    "title": "阿联酋航空取消或变更预订常见问题",
+    "domain": "refund",
+    "documentType": "official_faq",
+    "authority": "airline_official_web",
+    "validFrom": "2026-07-01",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-001",
+    "locale": "zh-CN",
+    "text": "取消阿联酋航空航班预订\n我可以取消预订吗？\n可以，你可以前往 emirates.com，通过 管理预订 对预订进行更改。\n我们目前接到许多来电，因此，为了避免长时间等候，请使用下列其他方式 联系我们 。你也可以尝试在你计划的旅行日期临近时致电我们。\n完成预订之后，我如何在线更改行程信息？\n你可以通过“管理预订”更改你的预订。请注意，如果你的预订符合在线更改的条件，你将找到“更改我的预订”链接。根据你的机票票价规则，我们可能需要向你收取某些更改费用。\n如果你的预订不符合在线更改的条件，你可以联系旅行代理，或者如果你是直接通过我们预订的，则可致电我们的联络中心。\n如果你想对合作伙伴航空公司的奖励预订进行更改，请 联系 阿联酋航空 Skywards 团队。\n改签机票要缴纳费用吗？\n根据机票的票价规则，变更预订可能需要收取某些费用。如果你前往 emirates.com 通过 管理预订 进行更改，你会发现哪些费用将适用于扣费或附加税。如果你计划预订的新行程的票价高于已经支付的票价，你也需要支付差价。你需要在线支付费用和票价差额，方可完成机票更改。\n我可以在线对已部分使用的机票进行更改吗？\n可以，根据你的机票票价规则，你可以通过 管理预订 进行在线更改，即使你已飞完部分航程。\n如果已变更预订并应获得退款，会怎么样？\n如果你 通过emirates.com做出变更后 ，符合退款条件（比如未使用税费），我们将把一张贷记单（EMD）发送至你的邮箱。该贷记单的有效期为自发放日期起（比如自你更改预订之日起）一年内有效。\n该贷记单可用于未来的阿联酋航空预订，或者凭贷记单申请退款。\n请联系你的 当地阿联酋航空办事处 ，将此贷记单用于未来的阿联酋航空预订，或者 填写我们的退款表 以接收退款。\n我可以只为预订中的一位乘客进行在线更改吗？\n不可以，你的任何在线更改都将适用于预订中的每位乘客。若想只为一人更改航班，则需要 联系我们 或为你预订的旅行代理。\n但是，如果你希望为个别乘客更改座位、预订特殊膳食或增添服务，则可以通过 管理预订 来完成。\n我可以在网上更改以里程或奖励积分进行的预订吗？",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/help/faq-topics/cancelling-or-changing-a-booking/",
+    "sourcePath": "official_snapshots/emirates_change_cancel_faq.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "b008f0298a28f0dca851e7f37e8f2fe08183287f0cf6ee3f95270d76f2fcf6bc",
+    "metadata": {
+      "sourceId": "emirates_change_cancel_faq",
+      "pageTitle": "取消或变更预订 | 常见问题 | 帮助和支持 | 阿联酋航空 中",
+      "publishedAt": "2026-07-01",
+      "sourceContentSha256": "eafdf1e31806ac79d42cbd641371d1af3f5f2ecce4b19e87221629e95a07cbb5",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 2
+    }
+  },
+  {
+    "documentId": "emirates_change_cancel_faq",
+    "version": "2026-08-03.eafdf1e31806",
+    "title": "阿联酋航空取消或变更预订常见问题",
+    "domain": "refund",
+    "documentType": "official_faq",
+    "authority": "airline_official_web",
+    "validFrom": "2026-07-01",
+    "validTo": null,
+    "status": "active",
+    "section": "refund.web-002",
+    "locale": "zh-CN",
+    "text": "我可以在网上更改以里程或奖励积分进行的预订吗？\n可以，你可以通过 访问“管理预订” ，在网上更改以 Skywards 里程或阿联酋航空企业商务奖励积分进行的预订。\n如果航班变更，我的专车接送预订会怎样？\n如果变更前的航班已预订专车接送服务，这些预订将被取消。\n你需要 通过管理预订 为新航班预订专车接送服务，阿联酋境内须提前至少12小时，其他城市须提前24小时。\n如果我已通过emirates.com申请阿联酋签证，然后进行了航班变更，会怎么样？\n如果你已通过emirates.com申请阿联酋签证，请确保签证适用于新的旅行日期。如果你的签证已经得到批准，其有效期为自批准日期起60日。\n变更预订之后，座位或餐食方面会怎样？\n如果变更前的航段已选择座位或餐食，这些选择将不会保留。请 通过管理预订 ，为新的航班做出选择。\n如果取消网上预订，可以获得退款吗？\n可以，只要符合票价规则，你即可获得全额退款。我们会将票款退还至你购票时所使用的银行卡上。\n如果你仍然想取消，可通过 管理预订 进行，然后填写我们的 退款表格 即可。首先查看你的票价规则，因为部分机票不支持退款，或者可能存在取消费用。\n未使用或仅部分使用的机票如何退款？\n若想对未使用的机票申请退款，你可以前往 管理预订 取消机票，并填写我们的 退款表格 。取决于你的票价规则，我们将把票款退还至你用来购票的银行卡上。\n对于部分机票，一旦你开始旅行便不可退款，也可能存在取消费用，或者仅一部分票价可退款。\n什么是“票价规则”？\n所有航班机票都随附有“票价规则”，并由其确定机票的价格。这些规则包括机票是否可以全额退款，或者进行更改时是否需要额外收费。\n不同的票价会有不同的规则。预订前请务必点击“票价规则”，或询问你的旅行代理。\n所有常见问题主题\n手机和阿联酋航空 APP\n阿联酋航空办事处预订\n阿联酋航空商务奖励",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/help/faq-topics/cancelling-or-changing-a-booking/",
+    "sourcePath": "official_snapshots/emirates_change_cancel_faq.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "f8dc8b72b1a5108ae07089d2b170203697b2158e8b50fbc42ce12af15da237a4",
+    "metadata": {
+      "sourceId": "emirates_change_cancel_faq",
+      "pageTitle": "取消或变更预订 | 常见问题 | 帮助和支持 | 阿联酋航空 中",
+      "publishedAt": "2026-07-01",
+      "sourceContentSha256": "eafdf1e31806ac79d42cbd641371d1af3f5f2ecce4b19e87221629e95a07cbb5",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 2,
+      "chunkCount": 2
+    }
+  },
+  {
+    "documentId": "emirates_checked_baggage",
+    "version": "2026-08-03.f67ecc8db75c",
+    "title": "阿联酋航空托运行李规定",
+    "domain": "baggage",
+    "documentType": "official_web_guide",
+    "authority": "airline_official_web",
+    "validFrom": "2022-06-06",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-001",
+    "locale": "zh-CN",
+    "text": "享受我们提供的慷慨行李限额。你的免费行李额度取决于你的 行李的总重量 或 行李的总件数 。这两种计算方式分别称作计重制和计件制。\n计重制适用于大多数航线。计件制仅适用于目的地和出发地为美洲和非洲的航班。你的行李限额取决于你的目的地、票价和舱位等级。\n阿联酋航空对于航班上的行李限额制定了一般规则和准则。前往 管理你的预订 ，以查看你的行程的行李规定以及额外行李费用。如果你是阿联酋航空 Skywards 白金卡、金卡或银卡会员，还可在采用计重制的航线中获享额外行李额度。只搭乘行李计件制的阿联酋航空航班旅行时，阿联酋航空 Skywards 白金卡会员及金卡会员均可获享 1 件额外托运行李的礼遇（若是经济舱，该件行李的重量不得超过 23 公斤，若是商务舱和头等舱，该件行李的重量不得超过 32 公斤）。\n你的额度根据你所有行李的总重量而定。\n只要总重量不超过所乘舱位等级的行李额度，托运行李的件数不受限制。每个单件行李重量不得超过 32 公斤。\n计重制适用于所有航线，出发地或目的地为美洲以及出发地为非洲的航班除外（针对 2021 年 8 月 9 日之前出票的机票）。\n*对于出发地为澳大利亚和新西兰的行程且于 2019 年 11 月 26 日当天或之后出票的经济舱 Saver 票价机票，行李限额为 30 公斤\n*对于从欧洲出发前往澳大利亚或新西兰的行程且于 2024 年 7 月 5 日当天或之后出票的经济舱 Saver 票价机票，行李限额为 30 公斤\n计重制托运行李尺寸\n每件托运行李总尺寸（长 + 宽 + 高）不可超过 203 厘米（79.92 英寸）。总尺寸超过 203 厘米（79.92 英寸）的单件物品不得作为托运行李运送，必须作为货物运输。\n计件制（美洲和非洲）\n你可以托运规定数量的行李件数，每件行李具有重量限额。你的行李限额取决于你的机票或舱位等级。\n计件制适用于目的地和出发地为美洲以及出发地为非洲的航班。\n对于 2021 年 8 月 9 日及之后出票的机票，计件制也适用于飞往非洲的航班。\n出发地及目的地为美洲和非洲的航班的行李限额（美洲境内及美国与欧洲之间的航班除外）：",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/checked-baggage/",
+    "sourcePath": "official_snapshots/emirates_checked_baggage.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "fbf42351d76f61b1bee18cb92a5e1d89d4d48629637f13ffcd5e792709b41e9f",
+    "metadata": {
+      "sourceId": "emirates_checked_baggage",
+      "pageTitle": "托运行李 | 行李 | 起飞前 | 阿联酋航空 中",
+      "publishedAt": "2022-06-06",
+      "sourceContentSha256": "f67ecc8db75c3454f1d493766029d2161a23f5cc74059ec664d5df98b06171c6",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 2
+    }
+  },
+  {
+    "documentId": "emirates_checked_baggage",
+    "version": "2026-08-03.f67ecc8db75c",
+    "title": "阿联酋航空托运行李规定",
+    "domain": "baggage",
+    "documentType": "official_web_guide",
+    "authority": "airline_official_web",
+    "validFrom": "2022-06-06",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-002",
+    "locale": "zh-CN",
+    "text": "出发地及目的地为美洲和非洲的航班的行李限额（美洲境内及美国与欧洲之间的航班除外）：\n* 如果你的旅程从非洲出发，且以经济舱 Special 票价预订，同时机票出票时间早于 2020 年 5 月 11 日，那么你可托运两件行李，每件不超过 23 公斤。\n美洲境内及美国与欧洲之间航班的行李限额：\n从澳大利亚、新西兰或亚洲出发\n如果你要前往非洲，且中途停留时间超过 24 小时，则计重制可能适用于你的旅程。\n计件制托运行李尺寸\n每件托运行李的总尺寸（长 + 宽 + 高）不得超过 150 厘米（59 英寸）。对于总尺寸超过 150 厘米（59.05 英寸）但小于 203 厘米（79.92 英寸）的单件物品，将收取超大行李费。\n总尺寸超过 203 厘米（79.92 英寸）的单件物品不得作为托运行李运送，必须作为货物运输。\n如果你从美国出发，且预订的首班航班不是由阿联酋航空运营，则可能适用 不同的行李规定 。\n联运航班指与阿联酋航空航班使用同一张机票的航班，但由其他航空公司运营，并且机票上没有阿联酋航空航班号码（阿联酋航空航班号码以 EK 开头）。这些航空公司的行李限额可能不同于阿联酋航空。请参阅 联运合作伙伴行李限额 ，了解随身行李和托运行李的限额及费用信息。\n托运超过 15 件行李\n出于运营和安全原因，如果你的托运行李超过 15 件，我们可能无法在你乘坐的航班上同机运送你的所有额外行李。\n如果发生这种情况：\n我们将在下一趟航班运送你的额外行李，并在 5 天内将你的行李交送给你。\n我们的 额外行李限额条款与细则 适用。\n1999 年《蒙特利尔公约》或 1929 年《华沙公约》（经修订）将适用于你的额外行李，这些行李视同为与你搭乘的航班同机运送。根据这些公约，如果你的行李未在航班起飞后 5 天内到达，才会被视为延误。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/checked-baggage/",
+    "sourcePath": "official_snapshots/emirates_checked_baggage.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "4f0639ac020ecf4d9996ae1a5240cd602c7957d6090fae7cfb345d47af8a9c40",
+    "metadata": {
+      "sourceId": "emirates_checked_baggage",
+      "pageTitle": "托运行李 | 行李 | 起飞前 | 阿联酋航空 中",
+      "publishedAt": "2022-06-06",
+      "sourceContentSha256": "f67ecc8db75c3454f1d493766029d2161a23f5cc74059ec664d5df98b06171c6",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 2,
+      "chunkCount": 2
+    }
+  },
+  {
+    "documentId": "emirates_cabin_baggage",
+    "version": "2026-08-03.960fee784f45",
+    "title": "阿联酋航空随身行李规定",
+    "domain": "baggage",
+    "documentType": "official_web_guide",
+    "authority": "airline_official_web",
+    "validFrom": "2026-02-23",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-001",
+    "locale": "zh-CN",
+    "text": "各舱位等级的随身行李限额\n在印度登机的乘客可携带一件随身行李。随身行李的尺寸不得超过 115 厘米（长 + 宽 + 高）。\n请注意，本规定仅适用于经济舱和豪华经济舱乘客；头等舱和商务舱乘客不受此限制。\n搭乘从巴西出发的所有航班的乘客可携带 10 公斤随身行李。\n婴儿食品和特殊膳食限制\n个人药物不可放入机上餐饮冷藏设备中。对于所有需要恒温储存的药物，请使用医用级认证保温容器或保温袋妥善包装。我们的乘务员可根据乘客要求提供冰块，确保乘客的保温容器在整个飞行过程中保持冷藏状态。\n对于往返于或经过美国的航班，以及往返于或经过澳大利亚和新西兰的航班，如果乘客携带的容器中粉状物达到或超过 350 毫升，则不允许将其作为随身行李携带。\n如果容器中的粉状物达到或超过 350 毫升，则必须托运。\n根据最后的出发地，如果随身行李中的容器装有超过 350 毫升的粉状物，则可能会在迪拜国际机场 (DXB)、米兰-马尔彭萨机场 (MXP) 和雅典国际机场 (ATH) 被没收。\n350 毫升以内的粉末，须经额外安检。",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/cabin-baggage-rules/",
+    "sourcePath": "official_snapshots/emirates_cabin_baggage.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "9f8da3caee69788358f6ea0697c7569f438757a172dde51d21860d0984ff07a4",
+    "metadata": {
+      "sourceId": "emirates_cabin_baggage",
+      "pageTitle": "随身行李规定 | 行李 | 起飞前 | 阿联酋航空 中",
+      "publishedAt": "2026-02-23",
+      "sourceContentSha256": "960fee784f454f1fbef0159d1db803c1ff0ec3eafdd7b5ecf40b7cbd8a2e5ff8",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 1
+    }
+  },
+  {
+    "documentId": "emirates_delayed_damaged_baggage",
+    "version": "2026-08-03.ba55b227526a",
+    "title": "阿联酋航空行李延误或损坏说明",
+    "domain": "baggage",
+    "documentType": "official_web_guide",
+    "authority": "airline_official_web",
+    "validFrom": "2021-06-01",
+    "validTo": null,
+    "status": "active",
+    "section": "baggage.web-001",
+    "locale": "zh-CN",
+    "text": "查看你的行李索赔状态\n延误和损坏的行李及追踪\n如果我的托运行李延误或丢失，我可以获得补偿吗？\n如果托运行李延误了，你可能有资格获得补偿。请于收到行李后 21 天内 联系我们 ，并附上你在行李延误期间购买的任何必需衣物或洗漱用品的收据。填写该表格时最多可提交两个大小均不超过 7MB 的文件。请使用“添加字段”选项，上传其他文件。\n如果你的行李被认定已不幸丢失，我们将联系你安排赔偿事宜。\n我需要去机场领取延误行李么？\n一旦我们找到你的行李，经海关放行后，我们将与你联系，安排合适的行李递送时间。\n然而，在某些国家/地区，依据当地法律法规，我们无法为你代办行李通关手续，你将需要到机场领取行李。如果遇到这种情况，你在到达大厅登记行李遗失情况时，我们的机场工作人员会告知你。\n我如何在旅途中追踪行李？\n使用阿联酋航空 APP 中的行李追踪器，即可在旅途中随时查看行李位置。\n从办理托运到行李装上飞机、在行李转送至中转航班时，以及当行李到达目的地时，你都可以追踪和查看行李状态。当你的行李在迪拜等待提取时，你还可以查看行李传送带编号。\n请留意主屏幕上的通知，以便追踪你的行李。你也可以在“我的行程”中的行李部分查看行李状态。你可以在几乎所有的阿联酋航空航线上追踪行李，在某些目的地，你甚至可以收到行李传送带编号的提醒通知。\n如果行李出现延误，你会自动收到一个记录编号 (PIR)，并可以追踪你的行李状态。\n如果你没有这个应用程序，可使用我们网站上的 延误或损坏行李追踪器 。\n阿联酋航空如何找到延误行李？\n如果行李发生延误，我们将启动追踪流程。我们可能会请你提供某些文件，你将需要填写一份行李清单表 (BIF)，列明行李物品的相关信息。\n由于可能涉及多家航空公司或多个机场，追踪流程可能耗时长达 21 天。\n请填写 行李清单表 (BIF) ，列明你的行李物品。务必准确列明所有物品，表格一旦提交，便不可编辑或重新发送。\n要访问表格，你将需要输入自己的姓氏以及报告行李遗失时得到的 PIR 编号。\n如果我的行李在其他航空公司的航班上遗失或损坏，我该怎么办？",
+    "carrierCodes": [
+      "EK"
+    ],
+    "sourceUrl": "https://www.emirates.com/cn/chinese/before-you-fly/baggage/delayed-damaged-baggage/",
+    "sourcePath": "official_snapshots/emirates_delayed_damaged_baggage.txt",
+    "retrievedAt": "2026-08-03T08:37:27+00:00",
+    "contentSha256": "3e828bb7304659990455796f7a644f9d1369c79d1815a4f2d262925908efb5a7",
+    "metadata": {
+      "sourceId": "emirates_delayed_damaged_baggage",
+      "pageTitle": "行李延误或损坏 | 行李 | 起飞前 | 阿联酋航空 中",
+      "publishedAt": "2021-06-01",
+      "sourceContentSha256": "ba55b227526a24d240602098a5a018dbf20773721118d345667ff37935a418e2",
+      "extractorVersion": "main-keyword-v1",
+      "chunkIndex": 1,
+      "chunkCount": 1
+    }
+  }
+]

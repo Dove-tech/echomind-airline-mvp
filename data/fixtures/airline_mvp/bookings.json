@@ -38,6 +38,21 @@
     "passengerRefs": ["PAX999"],
     "segments": [],
     "ticketRefs": ["TKT9999"]
+  },
+  {
+    "pnrRef": "EK7D3M",
+    "subjectId": "subject_demo",
+    "orderRef": "ORD3001",
+    "passengerRefs": ["PAX301", "PAX302"],
+    "segments": [
+      {
+        "flightNo": "EK302",
+        "date": "2026-08-15",
+        "origin": "DXB",
+        "destination": "PVG",
+        "status": "CANCELLED"
+      }
+    ],
+    "ticketRefs": ["TKT3001", "TKT3002"]
   }
 ]
-

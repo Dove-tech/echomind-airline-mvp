@@ -1,17 +1,16 @@
 """运行时配置：统一管理 Mock 与真实基础设施的切换。
 
 这个模块只读取环境变量，不会修改系统环境、项目配置或数据库内容。
-项目默认保持完全离线：
+项目的面试运行档默认使用真实 PostgreSQL 基础设施：
 
-- 大模型：``mock``，使用确定性规则网关；
-- 业务数据库：``sqlite``，使用工程内嵌入式数据库；
-- LangGraph Checkpoint：``sqlite``；
-- Embedding：``mock``，使用确定性 Hash Embedding；
-- 知识库：``chroma``，使用本地持久化 Chroma。
+- 大模型：仍可在 ``mock`` 与 OpenAI-compatible API 间显式切换；
+- 业务数据库：PostgreSQL；
+- LangGraph Checkpoint：PostgreSQL；
+- Embedding：默认使用本机 FastEmbed 中文模型；
+- 知识库：PostgreSQL FTS + pgvector。
 
-需要连接真实服务时，只需复制 ``.env.example`` 为 ``.env`` 并切换对应
-backend。显式选择真实后端后，如果必要配置缺失，应用会快速失败并给出
-中文错误，避免用户误以为已经调用真实服务。
+``local``、``sqlite``、``memory`` 和 Hash Embedding 只保留给确定性单元测试，
+不会作为面试真实链路的静默回退。必要配置缺失时应用会快速失败。
 """
 
 from __future__ import annotations
@@ -98,24 +97,24 @@ class RuntimeSettings:
     llm_timeout_seconds: int = 60
     llm_max_retries: int = 2
 
-    # -------------------- SQLite/真实 PostgreSQL 切换 --------------------
-    database_backend: str = "sqlite"
+    # -------------------- PostgreSQL 运行档；SQLite 只用于测试 --------------------
+    database_backend: str = "postgres"
     database_url: str | None = None
     database_pool_size: int = 5
 
     # -------------------- LangGraph Checkpoint 后端 --------------------
-    checkpoint_backend: str = "sqlite"
+    checkpoint_backend: str = "postgres"
     checkpoint_database_url: str | None = None
 
     # -------------------- Mock/真实 Embedding 切换 --------------------
-    embedding_backend: str = "mock"
+    embedding_backend: str = "local_fastembed"
     embedding_base_url: str | None = None
     embedding_api_key: str | None = None
     embedding_model: str | None = None
     embedding_dimensions: int | None = None
 
-    # ``local`` 是纯内存检索；``chroma`` 是真实的本地持久化向量库。
-    knowledge_backend: str = "chroma"
+    # ``local`` 只用于离线测试；面试运行档统一使用 PostgreSQL + pgvector。
+    knowledge_backend: str = "postgres"
 
     @classmethod
     def from_env(cls, env_file: Path | None = None) -> "RuntimeSettings":
@@ -140,14 +139,14 @@ class RuntimeSettings:
             llm_max_retries=_integer("AIRLINE_MVP_LLM_MAX_RETRIES", 2),
             database_backend=_choice(
                 "AIRLINE_MVP_DATABASE_BACKEND",
-                "sqlite",
+                "postgres",
                 {"sqlite", "postgres"},
             ),
             database_url=_optional("AIRLINE_MVP_DATABASE_URL"),
             database_pool_size=_integer("AIRLINE_MVP_DATABASE_POOL_SIZE", 5),
             checkpoint_backend=_choice(
                 "AIRLINE_MVP_CHECKPOINT_BACKEND",
-                "sqlite",
+                "postgres",
                 {"memory", "sqlite", "postgres"},
             ),
             checkpoint_database_url=_optional(
@@ -155,8 +154,8 @@ class RuntimeSettings:
             ),
             embedding_backend=_choice(
                 "AIRLINE_MVP_EMBEDDING_BACKEND",
-                "mock",
-                {"mock", "openai_compatible"},
+                "local_fastembed",
+                {"mock", "local_fastembed", "openai_compatible"},
             ),
             embedding_base_url=_optional("AIRLINE_MVP_EMBEDDING_BASE_URL"),
             embedding_api_key=_optional("AIRLINE_MVP_EMBEDDING_API_KEY"),
@@ -166,8 +165,8 @@ class RuntimeSettings:
             ),
             knowledge_backend=_choice(
                 "AIRLINE_MVP_KNOWLEDGE_BACKEND",
-                "chroma",
-                {"local", "chroma"},
+                "postgres",
+                {"local", "postgres"},
             ),
         )
         settings.validate()
@@ -203,6 +202,12 @@ class RuntimeSettings:
                 raise ConfigurationError(
                     "AIRLINE_MVP_DATABASE_URL 必须以 postgresql:// 或 postgres:// 开头"
                 )
+
+        if self.knowledge_backend == "postgres" and self.database_backend != "postgres":
+            raise ConfigurationError(
+                "PostgreSQL RAG 必须与 PostgreSQL 业务数据库一起启用；"
+                "请设置 AIRLINE_MVP_DATABASE_BACKEND=postgres"
+            )
 
         if self.checkpoint_backend == "postgres":
             checkpoint_url = (

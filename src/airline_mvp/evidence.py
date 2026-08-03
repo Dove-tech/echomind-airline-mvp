@@ -124,11 +124,15 @@ def tool_result_to_evidence(
 
     evidence: list[EvidenceItem] = []
     for index, item in enumerate(items):
+        raw_authority = item.get(
+            "authority",
+            data.get("clause", {}).get("authority"),
+        )
         authority = (
-            "official_policy"
+            raw_authority
             if definition.name in {"search_airline_knowledge", "get_policy_clause"}
-            and item.get("authority", data.get("clause", {}).get("authority"))
-            == "official_policy"
+            and raw_authority
+            in {"official_policy", "airline_official_web", "approved_faq"}
             else "approved_faq"
             if definition.name in {"search_airline_knowledge", "get_policy_clause"}
             else "system_of_record"
@@ -158,6 +162,9 @@ def tool_result_to_evidence(
                 locator={
                     "toolCallId": result.audit.tool_call_id,
                     "recordIndex": index,
+                    "sourceUrl": item.get("sourceUrl"),
+                    "sourcePath": item.get("sourcePath"),
+                    "contentSha256": item.get("contentSha256"),
                 },
                 confidence=1.0 if result.status != ToolStatus.PARTIAL else 0.8,
             )

@@ -2,7 +2,7 @@
 
 设计映射
 --------
-- 设计 §18：默认在 SQLite 中保存记录，也可切换真实 PostgreSQL 服务。
+- 设计 §18：面试运行档使用 PostgreSQL，SQLite 只保留给隔离测试。
 - 设计 §20：人工接管创建过程必须幂等。
 - 设计 §23：每个请求都能通过有序 TraceEvent 记录重建。
 
@@ -231,10 +231,12 @@ class _PostgreSQLConnectionAdapter:
         statement: str,
         parameters: tuple[Any, ...] | list[Any] | None = None,
     ) -> Any:
-        return self.connection.execute(
-            _translate_sqlite_sql_to_postgres(statement),
-            parameters or (),
-        )
+        translated = _translate_sqlite_sql_to_postgres(statement)
+        # psycopg 只在传入 params 时解析 ``%s`` 占位符。无参数查询若仍传入
+        # 空元组，SQL 中合法的 LIKE 'prefix%' 会被误判为非法 ``%_`` 占位符。
+        if not parameters:
+            return self.connection.execute(translated)
+        return self.connection.execute(translated, parameters)
 
 
 class PostgreSQLDatabase:

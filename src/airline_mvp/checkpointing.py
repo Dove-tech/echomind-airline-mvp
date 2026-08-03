@@ -2,8 +2,8 @@
 
 设计映射：设计 §17 和 §18。
 
-默认使用 ``SqliteSaver``，使会话能够在进程重启后恢复。真实部署可以
-切换 ``PostgresSaver``；单元测试也可以显式使用 ``MemorySaver``。
+面试运行档使用 ``PostgresSaver``，使会话能够跨进程重启恢复；单元测试
+显式使用 ``MemorySaver``，SQLite Saver 仅保留作离线兼容 Adapter。
 
 显式选择 PostgreSQL 时不会静默回退，否则健康检查可能错误地报告真实
 Checkpoint 已启用。
@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 def build_checkpointer(
@@ -22,7 +22,7 @@ def build_checkpointer(
     backend: str = "sqlite",
     postgres_url: str | None = None,
     pool_size: int = 5,
-) -> tuple[Any, str]:
+) -> tuple[Any, str, Callable[[], None]]:
     """构建 Mock/本地/真实 Checkpoint 后端。"""
 
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -31,7 +31,7 @@ def build_checkpointer(
     if backend == "memory":
         from langgraph.checkpoint.memory import MemorySaver
 
-        return MemorySaver(), "memory"
+        return MemorySaver(), "memory", lambda: None
 
     # -------------------- 真实服务：PostgreSQL 持久化 Checkpoint --------------------
     if backend == "postgres":
@@ -62,7 +62,7 @@ def build_checkpointer(
         saver = PostgresSaver(pool)
         # setup() 只创建 Checkpoint 自己的表和迁移版本，不删除已有记录。
         saver.setup()
-        return saver, "postgres"
+        return saver, "postgres", pool.close
 
     if backend != "sqlite":
         raise ValueError(f"不支持的 Checkpoint backend：{backend}")
@@ -72,9 +72,9 @@ def build_checkpointer(
         from langgraph.checkpoint.sqlite import SqliteSaver
 
         connection = sqlite3.connect(path, check_same_thread=False)
-        return SqliteSaver(connection), "sqlite"
+        return SqliteSaver(connection), "sqlite", connection.close
     except ImportError:
         # 仅为兼容最小 Python 环境保留回退；正常安装 pyproject 依赖后不会进入。
         from langgraph.checkpoint.memory import MemorySaver
 
-        return MemorySaver(), "memory"
+        return MemorySaver(), "memory", lambda: None

@@ -48,6 +48,30 @@ def test_postgres_adapter_translates_only_repository_sql_subset() -> None:
     assert translated.endswith("ON CONFLICT DO NOTHING")
 
 
+def test_postgres_adapter_does_not_parse_percent_in_parameterless_sql() -> None:
+    """无参数 SQL 的 LIKE 百分号不能被 psycopg 当成参数占位符。"""
+
+    class RecordingConnection:
+        def __init__(self) -> None:
+            self.calls = []
+
+        def execute(self, *args):
+            self.calls.append(args)
+            return "ok"
+
+    connection = RecordingConnection()
+    adapter = _PostgreSQLConnectionAdapter(connection)
+
+    result = adapter.execute(
+        "SELECT 1 WHERE 'idx_name' LIKE 'idx_knowledge_%_hnsw'"
+    )
+
+    assert result == "ok"
+    assert connection.calls == [
+        ("SELECT 1 WHERE 'idx_name' LIKE 'idx_knowledge_%_hnsw'",)
+    ]
+
+
 class _FakeStructuredRunnable:
     """模拟“已经由远端模型返回结构化数据”的 LangChain Runnable。"""
 

@@ -9,6 +9,16 @@
     "stage": "ACQUIRING_BANK",
     "requestedAt": "2026-07-22T09:12:00+08:00",
     "updatedAt": "2026-07-28T18:00:00+08:00"
+  },
+  {
+    "refundRef": "RF3001",
+    "ticketRef": "TKT3001",
+    "orderRef": "ORD3001",
+    "pnrRef": "EK7D3M",
+    "subjectId": "subject_demo",
+    "refundStatus": "PROCESSING",
+    "stage": "AIRLINE_APPROVED",
+    "requestedAt": "2026-08-02T16:10:00+08:00",
+    "updatedAt": "2026-08-03T08:30:00+08:00"
   }
 ]
-

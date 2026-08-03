@@ -19,6 +19,19 @@
     "subjectId": "subject_demo",
     "couponStatus": "OPEN",
     "updatedAt": "2026-07-28T10:00:00+08:00"
+  },
+  {
+    "ticketRef": "TKT3001",
+    "pnrRef": "EK7D3M",
+    "subjectId": "subject_demo",
+    "couponStatus": "REFUNDED",
+    "updatedAt": "2026-08-02T16:10:00+08:00"
+  },
+  {
+    "ticketRef": "TKT3002",
+    "pnrRef": "EK7D3M",
+    "subjectId": "subject_demo",
+    "couponStatus": "OPEN",
+    "updatedAt": "2026-08-03T09:00:00+08:00"
   }
 ]
-

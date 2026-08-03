@@ -1,0 +1,12 @@
+### 健康检查
+GET http://127.0.0.1:18001/health
+Accept: application/json
+
+### 复杂航变和退款问题
+POST http://127.0.0.1:18001/v1/chat
+Content-Type: application/json
+
+{
+  "message": "EK302 航班 2026-08-15 已取消，PNR EK7D3M。请查询 TKT3001 的退款进度，并说明 TKT3002 可以如何退款或改签。",
+  "verified_subject_id": "subject_demo"
+}
