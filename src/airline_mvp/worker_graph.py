@@ -100,6 +100,15 @@ def build_domain_worker_graph(
 
         # 设计 §14.3：模型不能持续发出完全相同的调用。
         if decision.action == "call_tool" and decision.tool_name:
+            decision = decision.model_copy(
+                update={
+                    "arguments": dependencies.executor.canonicalize_arguments(
+                        domain=config.domain,
+                        tool_name=decision.tool_name,
+                        arguments=decision.arguments,
+                    )
+                }
+            )
             call_signature = _signature(decision.tool_name, decision.arguments)
             if call_signature in state.get("called_signatures", []):
                 decision = DomainDecision(
@@ -115,6 +124,9 @@ def build_domain_worker_graph(
                 "taskId": task.task_id,
                 "action": decision.action,
                 "toolName": decision.tool_name,
+                "decisionSource": decision.decision_source,
+                "modelToolCallId": decision.model_tool_call_id,
+                "argumentKeys": sorted(decision.arguments),
                 "reason": decision.reason,
             },
         )

@@ -295,14 +295,17 @@ class TokenUsage(BaseModel):
 class DomainDecision(BaseModel):
     """通用 Tool 循环使用的 Model Gateway 决策。
 
-    真实 LLM 可以通过结构化输出填写该契约；离线 Gateway 会确定性地产生
-    相同格式的结果。
+    真实 LLM 的业务工具决策来自原生 Function Calling；离线 Gateway 仍会
+    确定性地产生相同业务字段。``model_tool_call_id`` 只用于关联模型提议，
+    服务端执行时会另外创建可信的 ``tool_call_id``。
     """
 
     action: Literal["call_tool", "finish"]
     tool_name: str | None = None
     arguments: dict[str, Any] = Field(default_factory=dict)
     reason: str
+    decision_source: Literal["deterministic", "function_call"] = "deterministic"
+    model_tool_call_id: str | None = None
 
 
 class ChatRequest(BaseModel):

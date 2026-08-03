@@ -11,14 +11,23 @@
 
 from __future__ import annotations
 
+import re
 import time
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Callable, Literal
 
-from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
 
+from .domain_config import get_domain_config
 from .fixtures import AirlineFixtureStore, FixtureAuthorizationError
 from .knowledge import KnowledgeService
 from .models import (
@@ -35,9 +44,20 @@ def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-class FlightInput(BaseModel):
-    flight_no: str
-    date: str
+class StrictToolInput(BaseModel):
+    """所有业务 Function 的严格输入基类。
+
+    ``extra="forbid"`` 会进入 Function Calling JSON Schema，并在服务端再次
+    生效。因此模型不能把 ``tool``、``tool_name`` 或 ``parameters`` 等包装字段
+    混入真正的业务参数。
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class FlightInput(StrictToolInput):
+    flight_no: str = Field(description="航班号，例如 CZ3101")
+    date: str = Field(description="航班日期，格式为 YYYY-MM-DD")
 
     @field_validator("flight_no")
     @classmethod
@@ -45,8 +65,8 @@ class FlightInput(BaseModel):
         return value.upper().replace(" ", "")
 
 
-class BookingInput(BaseModel):
-    pnr_ref: str
+class BookingInput(StrictToolInput):
+    pnr_ref: str = Field(description="已经从旅客消息中提取出的 6-8 位 PNR")
 
     @field_validator("pnr_ref")
     @classmethod
@@ -54,14 +74,17 @@ class BookingInput(BaseModel):
         return value.upper()
 
 
-class TicketInput(BaseModel):
-    ticket_refs: list[str] = Field(min_length=1)
+class TicketInput(StrictToolInput):
+    ticket_refs: list[str] = Field(
+        min_length=1,
+        description="已经从 PNR 或旅客消息中获得的客票号列表",
+    )
 
 
-class RefundInput(BaseModel):
-    pnr_ref: str | None = None
-    ticket_ref: str | None = None
-    refund_ref: str | None = None
+class RefundInput(StrictToolInput):
+    pnr_ref: str | None = Field(default=None, description="可选 PNR")
+    ticket_ref: str | None = Field(default=None, description="可选客票号")
+    refund_ref: str | None = Field(default=None, description="可选退款单号")
 
     @model_validator(mode="after")
     def require_reference(self) -> "RefundInput":
@@ -70,9 +93,9 @@ class RefundInput(BaseModel):
         return self
 
 
-class PaymentInput(BaseModel):
-    pnr_ref: str | None = None
-    order_ref: str | None = None
+class PaymentInput(StrictToolInput):
+    pnr_ref: str | None = Field(default=None, description="可选 PNR")
+    order_ref: str | None = Field(default=None, description="可选订单号")
 
     @model_validator(mode="after")
     def require_reference(self) -> "PaymentInput":
@@ -106,7 +129,24 @@ class ToolDefinition:
     allowed_domains: frozenset[DomainName]
     evidence_type: str
     handler: ToolHandler
+    source_system: str = "airline_fixture"
     retry_once: bool = True
+
+    def as_function_call_schema(self) -> dict[str, Any]:
+        """生成 OpenAI/LangChain 通用 Function Calling Schema。
+
+        Schema 直接来自 ToolExecutor 最终使用的 Pydantic ``input_model``，
+        避免 Prompt 提示和运行时校验规则各维护一份后逐渐漂移。
+        """
+
+        return {
+            "type": "function",
+            "function": {
+                "name": self.name,
+                "description": self.description,
+                "parameters": self.input_model.model_json_schema(),
+            },
+        }
 
 
 class ToolRegistry:
@@ -128,6 +168,29 @@ class ToolRegistry:
             if domain in definition.allowed_domains
         ]
 
+    def function_call_schemas(
+        self,
+        *,
+        domain: DomainName,
+        allowed_tools: list[str],
+    ) -> list[dict[str, Any]]:
+        """只导出当前 Domain 被授权看到的 Function Schema。
+
+        ``allowed_tools`` 来自服务端 CasePlan，不接受模型修改。注册缺失、领域
+        越权等问题属于应用配置错误，因此在调用模型前直接失败，绝不把越权
+        Function 暴露给模型后再补救。
+        """
+
+        schemas: list[dict[str, Any]] = []
+        for name in allowed_tools:
+            definition = self.get(name)
+            if definition is None:
+                raise ValueError(f"计划引用了未注册工具：{name}")
+            if domain not in definition.allowed_domains:
+                raise ValueError(f"工具 {name} 不允许由 {domain.value} Agent 使用")
+            schemas.append(definition.as_function_call_schema())
+        return schemas
+
 
 class ToolExecutor:
     """负责强制执行策略的 Tool Executor。
@@ -146,6 +209,40 @@ class ToolExecutor:
         self.dataset_version = dataset_version
         self.forced_status_by_tool = forced_status_by_tool or {}
 
+    def canonicalize_arguments(
+        self,
+        *,
+        domain: DomainName,
+        tool_name: str,
+        arguments: dict[str, Any],
+    ) -> dict[str, Any]:
+        """把模型提议收敛成服务端可信的上下文参数。
+
+        Function Calling Schema 能约束字段形状，但模型仍可能自创知识域名称。
+        ``domains`` 属于 Agent 权限配置，不属于模型自由输入，因此始终由服务端
+        覆盖。承运人代码缺失时，只从 Query 中已经出现的航班号提取，不猜测。
+        """
+
+        canonical = dict(arguments)
+        if tool_name != "search_airline_knowledge":
+            return canonical
+
+        canonical["domains"] = list(get_domain_config(domain).knowledge_domains)
+        carrier_codes = [
+            str(code).upper()
+            for code in canonical.get("carrier_codes", [])
+            if re.fullmatch(r"[A-Za-z0-9]{2,3}", str(code))
+        ]
+        if not carrier_codes:
+            flight = re.search(
+                r"(?<![A-Z0-9])([A-Z]{2})\s?\d{3,4}(?![A-Z0-9])",
+                str(canonical.get("query", "")).upper(),
+            )
+            if flight:
+                carrier_codes = [flight.group(1)]
+        canonical["carrier_codes"] = carrier_codes
+        return canonical
+
     def execute(
         self,
         *,
@@ -156,6 +253,11 @@ class ToolExecutor:
         context: ToolExecutionContext,
     ) -> ToolResult:
         started = time.perf_counter()
+        arguments = self.canonicalize_arguments(
+            domain=domain,
+            tool_name=tool_name,
+            arguments=arguments,
+        )
         definition = self.registry.get(tool_name)
 
         # 设计 §15.5：在模型绑定阶段和此处分别进行一次校验。

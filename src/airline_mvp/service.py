@@ -212,7 +212,10 @@ ParentGraph
     )
 
     # -------------------- Mock 规则模型 vs 真实 OpenAI-compatible LLM --------------------
-    gateway = model or build_model_gateway(resolved_settings)
+    gateway = model or build_model_gateway(
+        resolved_settings,
+        registry=registry,
+    )
     worker_dependencies = WorkerDependencies(
         model=gateway,
         executor=executor,
