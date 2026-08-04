@@ -130,17 +130,17 @@ validate_and_load
 
 每个节点可以这样理解：
 
-| 节点 | 人话解释 |
-|---|---|
-| `validate_and_load` | 创建或更新 Case，记录请求 |
-| `understand_and_plan` | 识别意图、实体并拆分任务 |
-| `clarify` | 信息不足时询问 PNR、航班号等 |
-| `dispatch` | 把任务派给 Journey/Refund Agent |
-| `run_domain_worker` | 执行领域调查 |
-| `synthesize` | 汇总两个 Agent 的调查结果 |
-| `quality_check` | 检查有没有胡说、无证据引用或越权 |
-| `queue_handoff` | 需要退票、改签等写操作时转人工 |
-| `persist` | 保存 Case、Evidence、ToolCall 和 Trace |
+| 节点                    | 人话解释                              |
+| --------------------- | --------------------------------- |
+| `validate_and_load`   | 创建或更新 Case，记录请求                   |
+| `understand_and_plan` | 识别意图、实体并拆分任务                      |
+| `clarify`             | 信息不足时询问 PNR、航班号等                  |
+| `dispatch`            | 把任务派给 Journey/Refund Agent        |
+| `run_domain_worker`   | 执行领域调查                            |
+| `synthesize`          | 汇总两个 Agent 的调查结果                  |
+| `quality_check`       | 检查有没有胡说、无证据引用或越权                  |
+| `queue_handoff`       | 需要退票、改签等写操作时转人工                   |
+| `persist`             | 保存 Case、Evidence、ToolCall 和 Trace |
 
 第一遍只看节点之间如何连接，不要逐行研究每个函数。
 
@@ -497,18 +497,18 @@ ToolExecutor
 
 例如：
 
-| 想理解的问题 | 查设计文档 |
-|---|---|
+| 想理解的问题                    | 查设计文档  |
+| ------------------------- | ------ |
 | 为什么分 Journey/Refund Agent | §4、§12 |
-| State 为什么需要 Reducer | §10 |
-| Worker 为什么会循环调用 Tool | §13 |
-| 如何防止无限循环 | §14 |
-| Tool 权限在哪里校验 | §15 |
-| RAG 为什么需要原文下钻 | §16 |
-| Checkpoint 有什么作用 | §17 |
-| Evidence 和 Quality 如何工作 | §19 |
-| 为什么要转人工 | §20 |
-| Trace 记录什么 | §23 |
-| 如何进行离线评测 | §24 |
+| State 为什么需要 Reducer       | §10    |
+| Worker 为什么会循环调用 Tool      | §13    |
+| 如何防止无限循环                  | §14    |
+| Tool 权限在哪里校验              | §15    |
+| RAG 为什么需要原文下钻             | §16    |
+| Checkpoint 有什么作用          | §17    |
+| Evidence 和 Quality 如何工作   | §19    |
+| 为什么要转人工                   | §20    |
+| Trace 记录什么                | §23    |
+| 如何进行离线评测                  | §24    |
 
 设计文档应该作为“查阅手册”，而不是第一次阅读项目时的入口。

@@ -78,15 +78,17 @@ GET  /health
 
 ## 阅读顺序
 
-1. [完整设计](docs/DESIGN.md)
-2. [Function Calling 改造与完整链路](docs/FUNCTION_CALLING_ARCHITECTURE.md)
-3. [代码与设计章节映射](docs/CODE_DESIGN_MAP.md)
-4. `src/airline_mvp/parent_graph.py`
-5. `src/airline_mvp/worker_graph.py`
-6. `src/airline_mvp/tools.py`
-7. `src/airline_mvp/evidence.py`
-8. `src/airline_mvp/evaluation.py`
-9. `src/airline_mvp/config.py`
+1. [精简型多轮问答多 Agent 目标架构](docs/QA_MULTI_AGENT_ARCHITECTURE.md)
+2. [现有完整设计（待按目标架构改造）](docs/DESIGN.md)
+3. [意图识别架构原始方案](docs/INTENT_RECOGNITION_ARCHITECTURE.md)
+4. [Function Calling 改造与完整链路](docs/FUNCTION_CALLING_ARCHITECTURE.md)
+5. [代码与设计章节映射](docs/CODE_DESIGN_MAP.md)
+6. `src/airline_mvp/parent_graph.py`
+7. `src/airline_mvp/worker_graph.py`
+8. `src/airline_mvp/tools.py`
+9. `src/airline_mvp/evidence.py`
+10. `src/airline_mvp/evaluation.py`
+11. `src/airline_mvp/config.py`
 
 ## 安全边界
 
